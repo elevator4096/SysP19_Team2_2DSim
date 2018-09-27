@@ -1,10 +1,8 @@
-
-/**
- * Beschreiben Sie hier die Klasse Ball.
+/*Test
  * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
+ * 
  */
+
 public class Ball
 {
     // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
