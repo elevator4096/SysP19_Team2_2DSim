@@ -1,3 +1,7 @@
+/* Hinzugefügter Testkommentar von Chris
+ * 
+ */
+
 public class Simulation
 {
     private RobotB robotB  = new RobotB("robotB_Red");  
