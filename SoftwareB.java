@@ -8,6 +8,7 @@ public class SoftwareB
     private long TimerRightDrivingMotor = 0;
     
     RobotB robot;
+    
 
     public SoftwareB()
     {
@@ -22,7 +23,7 @@ public class SoftwareB
         //while(true) mainLoop();
     }
     
-    public void mainLoop(int newTime)
+    public void mainLoop(long newTime)
     {
         time = newTime;
         drive(100,200);

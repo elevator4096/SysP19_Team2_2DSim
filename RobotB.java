@@ -1,8 +1,13 @@
 public class RobotB
 {
+    //constants
+    private final int wheelbase = 120; // Achsenabstand
+    
     //general vars
     public String name;
     public Pose pose = new Pose(0,0,0);
+    private long time;
+    private long lastTime;
     
     // sensors
     public SharpSensor  sharpSensor1; 
@@ -33,4 +38,16 @@ public class RobotB
         
     }
     
+    public void update(long time)
+    {
+        this.time = time;
+        
+        
+        //robot.pose = ?; 
+        
+        
+        
+        
+        lastTime = this.time;
+    }
 }

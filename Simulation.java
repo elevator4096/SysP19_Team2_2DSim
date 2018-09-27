@@ -39,14 +39,18 @@ public class Simulation
         
         for( long time = 0; time < 10000000; time += 1000)
         {
-            mainSimulationLoop();
+            update(time);
         }
     }   
     
-    private void mainSimulationLoop() 
+    private void update(long time) 
     {
-        gui.reposition(redRobotB,robotB.pose);
+        robotB.update(time);
+        robotS.update(time);
         
+        softwareB.mainLoop(time);
+        
+        gui.reposition(redRobotB,robotB.pose);
     }    
     
 }
