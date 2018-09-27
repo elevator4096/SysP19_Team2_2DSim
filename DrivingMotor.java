@@ -1,33 +1,28 @@
+//Implementation eines stark vereinfachten Motortreibers + Motor + Encoder ->  spaeter vermutlich DRV8841 Motortreiber + Motor + Encoder
 
-/**
- * Beschreiben Sie hier die Klasse DrivingMotor.
- * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
- */
 public class DrivingMotor
-{
-    // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
-    private int x;
+{  
+    //speed in mm/us
+    private final double maxSpeed = (500/1000000)/128;
+    
+    private double speed = 0; 
 
-    /**
-     * Konstruktor für Objekte der Klasse DrivingMotor
-     */
     public DrivingMotor()
     {
-        // Instanzvariable initialisieren
-        x = 0;
+        
     }
-
-    /**
-     * Ein Beispiel einer Methode - ersetzen Sie diesen Kommentar mit Ihrem eigenen
-     * 
-     * @param  y    ein Beispielparameter für eine Methode
-     * @return        die Summe aus x und y
-     */
-    public int beispielMethode(int y)
+    
+    public void setSpeed(int pwmValue)
     {
-        // tragen Sie hier den Code ein
-        return x + y;
-    }
+        if(pwmValue>=0 && pwmValue<=255)
+        {
+            speed = (pwmValue-128)*maxSpeed;
+        }
+    }   
+    
+    public double getSpeed()
+    {
+        return speed;
+    }    
+
 }
