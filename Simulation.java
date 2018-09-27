@@ -1,3 +1,6 @@
+import javax.swing.JLabel;
+
+
 public class Simulation
 {
     private RobotB robotB  = new RobotB("robotB_Red");  
@@ -5,6 +8,11 @@ public class Simulation
     
     private SoftwareB softwareB  = new SoftwareB();  
     private SoftwareS softwareS  = new SoftwareS();  
+    
+    private GUI gui;
+    
+    private JLabel redRobotB;
+    private JLabel blueRobotS;
     
     
     public static void main()
@@ -16,19 +24,32 @@ public class Simulation
     
     public Simulation(boolean showGui)
     {
-        softwareB.run(robotB);
-        softwareS.run(robotS);
+        //lege position der Roboter fest
+        robotB.pose = new Pose(50,800,0);
+        robotS.pose = new Pose(550,800,0);
         
-        if (showGui)
+        
+        gui = new GUI();
+        redRobotB  = gui.drawRobotB(robotB);
+        blueRobotS = gui.drawRobotS(robotS);
+        gui.createBackground();
+        
+        softwareB.start(robotB);
+        softwareS.start(robotS);
+        
+        for( long time = 0; time < 10000000; time += 1000)
         {
-            GUI gui;
-            gui = new GUI();
-            gui.drawRobotB(robotB);
-            gui.drawRobotS(robotS);
-            gui.createBackground();
+            mainSimulationLoop();
         }
+    }   
+    
+    private void mainSimulationLoop() 
+    {
+        gui.reposition(redRobotB,robotB.pose);
         
     }    
+    
 }
+
 
 

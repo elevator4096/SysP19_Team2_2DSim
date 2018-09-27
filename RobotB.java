@@ -1,17 +1,18 @@
 public class RobotB
 {
     //general vars
-    public String name; 
+    public String name;
+    public Pose pose = new Pose(0,0,0);
     
     // sensors
-    private SharpSensor  sharpSensor1; 
-    private UsSensor     usSensor1; 
-    private LineSensor   frontMiddleLinesensor;
+    public SharpSensor  sharpSensor1; 
+    public UsSensor     usSensor1; 
+    public LineSensor   frontMiddleLinesensor;
     // actuators
-    private DrivingMotor leftDrivingMotor;
-    private DrivingMotor rightDrivingMotor;
-    private Servo        sharpSensor1Servo;
-    private BallThrower  ballThrower1;
+    public DrivingMotor leftDrivingMotor;
+    public DrivingMotor rightDrivingMotor;
+    public Servo        sharpSensor1Servo;
+    public BallThrower  ballThrower1;
     
 
     public RobotB(String robotName)

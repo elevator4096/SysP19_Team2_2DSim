@@ -25,7 +25,6 @@ public class GUI {
 
     private JLayeredPane contentPane; 
     private JFrame frame = new JFrame(GUI.class.getSimpleName());
-    public int time = 0;
     
 
     
@@ -45,22 +44,22 @@ public class GUI {
 
     }
     
-    public void createBackground()
+    public JLabel createBackground()
     {
-        createImage("images/background.png",760+15,1000+35,0,0);
+        return createImage("images/background.png",760+15,1000+35,0,0);
     }    
     
-    public void drawRobotB(RobotB robot)
+    public JLabel drawRobotB(RobotB robot)
     {
-        createImage("images/robotRed.png",0,0,50,800);
+        return createImage("images/robotRed.png",0,0,robot.pose.x,robot.pose.y);
     }
     
-    public void drawRobotS(RobotS robot)
+    public JLabel drawRobotS(RobotS robot)
     {
-        createImage("images/robotBlue.png",0,0,550,800);
+        return createImage("images/robotBlue.png",0,0,robot.pose.x,robot.pose.y);
     }
     
-    public Component createImage(String imagePath,int width, int height, int xPos, int yPos)
+    public JLabel createImage(String imagePath,int width, int height, int xPos, int yPos)
     {
         try {
             ImageIcon image = new ImageIcon( ImageIO.read(new File(imagePath)) );
@@ -80,5 +79,10 @@ public class GUI {
             return null;
         }    
     }
-
+    
+    public boolean reposition(JLabel image,Pose pose)
+    {
+        image.setLocation(pose.x,pose.y);
+        return true;
+    }
 }
