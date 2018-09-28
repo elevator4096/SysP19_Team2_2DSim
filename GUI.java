@@ -46,17 +46,17 @@ public class GUI {
     
     public JLabel createBackground()
     {
-        return createImage("images/background.png",760+15,1000+35,0,0);
+        return createImage("images/background.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY);
     }    
     
     public JLabel drawRobotB(RobotB robot)
     {
-        return createImage("images/robotRed.png",0,0,robot.pose.x,robot.pose.y);
+        return createImage("images/robotRed.png",0,0,(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y));
     }
     
     public JLabel drawRobotS(RobotS robot)
     {
-        return createImage("images/robotBlue.png",0,0,robot.pose.x,robot.pose.y);
+        return createImage("images/robotBlue.png",0,0,(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y));
     }
     
     public JLabel createImage(String imagePath,int width, int height, int xPos, int yPos)
@@ -68,7 +68,7 @@ public class GUI {
             JLabel imageLabel = new JLabel(image);
             
             imageLabel.setSize(imageLabel.getPreferredSize());
-            imageLabel.setLocation(xPos,yPos);  
+            imageLabel.setLocation(xPos,Constants.fieldSizeY-yPos);  
             contentPane.add(imageLabel);
          
             contentPane.repaint();
@@ -82,7 +82,7 @@ public class GUI {
     
     public boolean reposition(JLabel image,Pose pose)
     {
-        image.setLocation(pose.x,pose.y);
+        image.setLocation((int)Math.round(pose.x),Constants.fieldSizeY-(int)Math.round(pose.y));
         return true;
     }
 }

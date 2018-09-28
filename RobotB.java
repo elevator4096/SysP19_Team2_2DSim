@@ -1,13 +1,17 @@
+/* Abstraktionsebene + Treiber + Hardwaresimulation des Roboters
+ * Abstraktionsebene zwischen Kontrollsoftware(läuft auch auf Abstraktionsebene des Roboter)  
+ * und simulierten Sensoren/Aktoren
+ * 
+ * ermoeglicht High-Level Befehle wie drive(distanz) oder turn(winkel)
+*/
+
 public class RobotB
 {
-    //constants
-    private final int wheelbase = 120; // Achsenabstand
     
     //general vars
     public String name;
     public Pose pose = new Pose(0,0,0);
-    private long time;
-    private long lastTime;
+    private Pose targetPose = new Pose(0,0,0);
     
     // sensors
     public SharpSensor  sharpSensor1; 
@@ -18,10 +22,10 @@ public class RobotB
     public DrivingMotor rightDrivingMotor;
     public Servo        sharpSensor1Servo;
     public BallThrower  ballThrower1;
-    
 
-    public RobotB(String robotName)
+    public RobotB(String robotName, Pose pose)
     {
+        this.pose.setPose(pose);
         
         name = robotName;
         
@@ -36,18 +40,91 @@ public class RobotB
         sharpSensor1Servo       = new Servo();
         ballThrower1            = new BallThrower();
         
+        targetPose.setPose(this.pose);
     }
     
-    public void update(long time)
+    public void update()
     {
-        this.time = time;
-        
-        
-        //robot.pose = ?; 
+        update_status();
         
         
         
         
-        lastTime = this.time;
+        
+        
     }
+    
+        //drive distance in mm
+    public boolean drive(int distance, int speed)
+    {
+        targetPose.calculateTargetPose(pose,distance);
+        
+        leftDrivingMotor.setSpeed(speed);
+        rightDrivingMotor.setSpeed(speed);
+        return true;
+    }   
+    
+    public boolean turn(int angle, int speed)
+    {
+        return true;
+    }
+    
+    public boolean isMoving()
+    {
+        return ( (leftDrivingMotor.getSpeed()!=0)||(rightDrivingMotor.getSpeed()!=0) );
+    }    
+    
+    //Status von diversen Sensoren und Aktoren aktualisieren(Motor nach x Sekunden ausschalten etc.)
+    private void update_status()
+    {   
+        if ( isMoving() && pose.closeEnough(targetPose) ) 
+        {
+            leftDrivingMotor.setSpeed(0);
+            rightDrivingMotor.setSpeed(0);
+        }
+        
+        if (isMoving())
+        {
+            Move();
+        }
+    }
+    
+    private boolean Move()
+    {
+        //Ein wenig Mathemagie ;-) zur berechnung der neuen Pose
+        // aus der aktuellen pose und den Radgeschwindigkeiten
+        
+        double sL       =  leftDrivingMotor.getSpeed()*Constants.timeStep/1000000;
+        double sR       =  leftDrivingMotor.getSpeed()*Constants.timeStep/1000000;
+        
+        // Kurvenradius nur berechnen wenn sL != sR -> sonst division durch 0
+        if (Math.abs(sL-sR)>0.1)
+        {
+            double d = Constants.wheelbase;
+            
+            double a        = d/(sR/sL -1);
+            double alpha    = sL/a;
+            
+            double beta     = Math.PI/2 - alpha/2;
+            double r = 2*(d+a)*Math.sin(alpha/2);
+            
+            double phi = pose.phi + Math.PI/2 - beta;
+            
+            double dX = r*Math.sin(phi);
+            double dY = r*Math.cos(phi);
+            
+            pose.setPose(pose.x+dX,pose.y+dY, phi);
+        } else
+        {
+            double phi = pose.phi;
+            double r = sR;
+            double dX = r*Math.sin(phi);
+            double dY = r*Math.cos(phi);
+            pose.setPose(pose.x+dX,pose.y+dY, phi);
+        }    
+        
+        
+        
+        return true;
+    }    
 }
