@@ -3,8 +3,8 @@ import javax.swing.JLabel;
 
 public class Simulation
 {
-    private RobotB robotB  = new RobotB("robotB_Red");  
-    private RobotS robotS = new RobotS("robotS_Blue");
+    private RobotB robotB ;
+    private RobotS robotS ;
     
     private SoftwareB softwareB  = new SoftwareB();  
     private SoftwareS softwareS  = new SoftwareS();  
@@ -14,6 +14,7 @@ public class Simulation
     private JLabel redRobotB;
     private JLabel blueRobotS;
     
+    Clock clock = new Clock();
     
     public static void main()
     {
@@ -24,10 +25,13 @@ public class Simulation
     
     public Simulation(boolean showGui)
     {
-        //lege position der Roboter fest
-        robotB.pose = new Pose(50,800,0);
-        robotS.pose = new Pose(550,800,0);
         
+        //lege position der Roboter fest
+        //robotB.pose = new Pose(50,800,0);
+        //robotS.pose = new Pose(550,800,0);
+        
+        robotB  = new RobotB("robotB_Red",new Pose(50,200,0));
+        robotS = new RobotS("robotS_Blue",new Pose(550,200,0));
         
         gui = new GUI();
         redRobotB  = gui.drawRobotB(robotB);
@@ -35,22 +39,42 @@ public class Simulation
         gui.createBackground();
         
         softwareB.start(robotB);
-        softwareS.start(robotS);
+        //softwareS.start(robotS);
         
-        for( long time = 0; time < 10000000; time += 1000)
+        int counter = 0;
+        while(clock.tick()<60000000) // 60 s Simulationszeit
         {
-            update(time);
+            counter++;
+            update();
+            
+            if (counter*Constants.timeStep > 20000*Constants.simulationSpeed/100)
+            {
+                wait(20);
+                counter=0;
+            }
         }
     }   
     
-    private void update(long time) 
+    private void update() 
     {
-        robotB.update(time);
-        robotS.update(time);
+        robotB.update();
+        robotS.update();
         
-        softwareB.mainLoop(time);
+        softwareB.mainLoop();
         
         gui.reposition(redRobotB,robotB.pose);
+    }    
+    
+    private void wait(int waitingTime)
+    {
+        try
+        {
+            Thread.sleep(waitingTime);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
     }    
     
 }
