@@ -1,16 +1,26 @@
+/* Simulation des Gesamten Spielablaufs durch serielles ausfuehren der einzelnen Updateroutinen der zu simulierenden Komponenten
+ * und Darstellung der Zustaende simulierter Objekte durch entsprechende GUI Aufrufe
+ */
+
+
+
 import javax.swing.JLabel;
 
 
 public class Simulation
 {
+    //Hardwareroboter ( robotB = Roboter Buchs, robotS = Roboter St. Gallen 
     private RobotB robotB ;
     private RobotS robotS ;
     
+    //Software fuer Roboter
     private SoftwareB softwareB  = new SoftwareB();  
     private SoftwareS softwareS  = new SoftwareS();  
     
+    //Grafische Oberflaeche
     private GUI gui;
     
+    //drehbare Bilder von Robotern
     private JLabelRot redRobotB;
     private JLabelRot blueRobotS;
     
@@ -18,6 +28,7 @@ public class Simulation
     
     public static void main()
     {
+        //Einzelne Simulation erzeugen
         Simulation simulation1;
         simulation1 = new Simulation(true);
         
@@ -26,46 +37,64 @@ public class Simulation
     public Simulation(boolean showGui)
     {
         
-        //lege position der Roboter fest
-        //robotB.pose = new Pose(50,800,0);
-        //robotS.pose = new Pose(550,800,0);
-        
+        //Roboter mit Name und Pose(Position und Richtung) erzeugen
         robotB  = new RobotB("robotB_Red",new Pose(50,200,0));
         robotS = new RobotS("robotS_Blue",new Pose(550,200,0));
         
+        //Software von Roboter initialisieren
+        softwareB.init(robotB);
+        //softwareS.init(robotS);
+        
+        //Grafische Oberflaeche erzeugen
         gui = new GUI();
+        
+        //Drehbare Bilder von Robotern laden und darstellen
         redRobotB  = gui.drawRobotB(robotB);
         blueRobotS = gui.drawRobotS(robotS);
+        
+        //Hintergrundbild laden und darstellen
         gui.createBackground();
         
-        softwareB.start(robotB);
-        //softwareS.start(robotS);
+        //startsignal an Roboter senden
+        softwareB.start();
+        //softwareS.start();
         
+        //Hauptschleife der Simulation wird ausgefuehrt bis Zeit abgelaufen
         int counter = 0;
         while(clock.tick()<60000000) // 60 s Simulationszeit
         {
             counter++;
+            
+            //Simulationsschritt ausfuehren
             update();
             
+            // Alle 20 ms simulierter Zeit 20ms warten um Echtzeitsimulation mit ca 50 FPS zu erhalten
+            // Simulationsgeschwindigkeit kann ueber Constants.simulationSpeed veraendert werden
             if (counter*Constants.timeStep > 20000*Constants.simulationSpeed/100)
             {
                 wait(20);
-                counter=0;
+                counter -= 20000/Constants.timeStep;
             }
         }
     }   
     
+    //Einzelner Simulationsschritt
     private void update() 
     {
+        //lasse Roboter seinen neuen veraenderten Zustand ermitteln(Positionsaenderung, Zeitaenderung, etc.)
         robotB.update();
         //robotS.update();
         
+        //Hauptschleife der Robotersoftware ausfuehren
         softwareB.mainLoop();
         //softwareS.mainLoop();
         
+        //neue Pose(Position und Richtung) des Roboters darstellen
         gui.repose(redRobotB,robotB.pose);
     }    
     
+    
+    //Wartefunktion um Simulation zu verlangsamen
     private void wait(int waitingTime)
     {
         try

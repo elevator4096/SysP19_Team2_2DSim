@@ -1,5 +1,5 @@
 /* Abstraktionsebene + Treiber + Hardwaresimulation des Roboters
- * Abstraktionsebene zwischen Kontrollsoftware(läuft auch auf Abstraktionsebene des Roboter)  
+ * Abstraktionsebene zwischen Kontrollsoftware(läuft auch auf Abstraktionsebene des Roboters)  
  * und simulierten Sensoren/Aktoren
  * 
  * ermoeglicht High-Level Befehle wie drive(distanz) oder turn(winkel)
@@ -8,53 +8,52 @@
 public class RobotB
 {
     
-    //general vars
+    //allgemeine Variablen
     public String name;
     public Pose pose = new Pose(0,0,0);
     private Pose targetPose = new Pose(0,0,0);
     
-    // sensors
+    // Sensoren
     public SharpSensor  sharpSensor1; 
     public UsSensor     usSensor1; 
     public LineSensor   frontMiddleLinesensor;
-    // actuators
+    
+    // Aktoren
     public DrivingMotor leftDrivingMotor;
     public DrivingMotor rightDrivingMotor;
     public Servo        sharpSensor1Servo;
     public BallThrower  ballThrower1;
 
+    //Konstruktor um Namen und Pose(Position und Richtung) des Roboters festzulegen
     public RobotB(String robotName, Pose pose)
     {
         this.pose.setPose(pose);
         
         name = robotName;
         
-        //create Sensors
+        //Erzeuge Sensoren
         frontMiddleLinesensor   = new LineSensor();
         sharpSensor1            = new SharpSensor();
         usSensor1               = new UsSensor();
         
-        //create actuators
+        //Erzeuge Aktoren
         leftDrivingMotor        = new DrivingMotor();
         rightDrivingMotor       = new DrivingMotor();
         sharpSensor1Servo       = new Servo();
         ballThrower1            = new BallThrower();
         
+        //Zielpose(Position und Richtung) auf aktuelle pose setzen
         targetPose.setPose(this.pose);
     }
     
+    //Updatefunktion wird von Simulation periodisch aufgerufen um Roboter seinen Zustand aendern zu lassen
     public void update()
     {
         update_status();
         
-        
-        
-        
-        
-        
     }
     
-        //drive distance in mm
+    //Fahre distanz in mm mit geschwindigkeit in mm/s
     public boolean drive(int distance, int speed)
     {
         targetPose.calculateTargetPose(pose,distance);
@@ -64,29 +63,25 @@ public class RobotB
         return true;
     }   
     
-    public boolean turn(double angle, double speed)
+    //drehe um Mittelpunkt des Roboters um Winkel in rad und Winkelgeschwindigkeit in rad/s
+    public boolean turn(double angle, double angularSpeed)
     {
         targetPose.phi = pose.phi + angle;
         
-        if (angle > 0)
-        {
-            leftDrivingMotor.setSpeed(-speed/2);
-            rightDrivingMotor.setSpeed(speed/2);
-        } else
-        {
-            leftDrivingMotor.setSpeed(speed/2);
-            rightDrivingMotor.setSpeed(-speed/2);
-        }
+        double motorSpeed = angularSpeed*Constants.wheelbase*Math.PI/2;
+        leftDrivingMotor.setSpeed(-motorSpeed);
+        rightDrivingMotor.setSpeed(motorSpeed);
         
         return true;
     }
     
+    //Gibt nur wahr zurueck wenn sich keines der Raeder bewegt
     public boolean isMoving()
     {
         return ( (leftDrivingMotor.getSpeed()!=0)||(rightDrivingMotor.getSpeed()!=0) );
     }    
     
-    //Status von diversen Sensoren und Aktoren aktualisieren(Motor nach x Sekunden ausschalten etc.)
+    //Status von diversen Sensoren und Aktoren aktualisieren(Motor ausschalten wenn Zielposition erreicht, etc.)
     private void update_status()
     {   
         if ( isMoving() && pose.closeEnough(targetPose) ) 
@@ -101,15 +96,19 @@ public class RobotB
         }
     }
     
+    // Berechne Bewegung in einem Simulationsschritt anhand der Radgeschwindigkeiten
     private boolean Move()
     {
-        //Ein wenig Mathemagie ;-) zur berechnung der neuen Pose
+        //Ein wenig Mathemagie ;-) zur Berechnung der neuen Pose
         // aus der aktuellen pose und den Radgeschwindigkeiten
         
+        //gefahrene Distanz mit linkem Rad berechnen
         double sL       =  leftDrivingMotor.getSpeed()*Constants.timeStep/1000000;
+        //gefahrene Distanz mit rechtem Rad berechnen
         double sR       =  rightDrivingMotor.getSpeed()*Constants.timeStep/1000000;
         
-
+        
+        // Radgeschwindigkeiten sind praktisch gleich? - reine Translation
         if (Math.abs(sL-sR)<0.000001)
         {
             double phi = pose.phi;
@@ -119,11 +118,14 @@ public class RobotB
             pose.setPose(pose.x+dX,pose.y+dY, phi);
 
         } 
+        // Radgeschwindigkeiten sind praktisch genau entgegengesetzt? - reine Rotation
         else if (Math.abs(sL+sR)<0.000001)
         {
             double d = Constants.wheelbase;
             pose.setPose(pose.x,pose.y, pose.phi + (sR-sL)/(Math.PI*d ) );
-        }else
+        }
+        //Radgeschwindigkeiten sind unterschiedlich -> Fahre teil eines Kreisabschnittes -> Funktioniert noch nicht richtig
+        else
         {
 
             /* FUNKTIONIERT NOCH NICHT!!!

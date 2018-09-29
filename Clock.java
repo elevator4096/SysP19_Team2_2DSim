@@ -1,3 +1,4 @@
+//Simulierte Uhr in Mikrosekunden fuer korrektes Timing aller Komponenten
 public class Clock
 {
     private long time = 0;

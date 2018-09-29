@@ -1,39 +1,67 @@
+/* Software welche spaeter direkt auf der Abstraktionsebene des echten Roboters laeuft
+ * 
+ * verwendet robot als Abstraktionsebene welche Low-Level Treiber enthaelt und Funktionen wie Drive(Distanz in mm) oder Turn(Winkel in Bogenmass) unterstuetzt
+ * 
+ * Soll mithilfe der Treiber den Roboter praezise steuern, Gegner umfahren, paesse spielen und sich dabei an die Spielregeln halten sowie den finalen Korb werfen
+ */
 public class SoftwareB
 {
     
     RobotB robot;
     
-    boolean active = true;
+    int state = 0;
+    
+    boolean gameStarted = false;
 
     public SoftwareB()
     {
         
     }
     
-    public void start(RobotB robotB)
+    
+    //initialisiert den Roboter sobald die Simulationsumgebung fertig geladen ist
+    public void init(RobotB robotB)
     {
         robot = robotB;
         
         //Only for REAL robot
-        //while(true) mainLoop();
-        robot.turn(Math.PI/4, 100);
-        
+        //while(true) mainLoop();     
     }
     
+    //wird ausgefuehrt sobald das Startsignal empfangen wurde
+    public void start()
+    {
+        gameStarted = true;
+    }
+    
+    //Wird in der Hauptschleife ausgefuehrt(hier von Simulationsumgebung - Real in Endlosschleife)
     public void mainLoop()
     {
-        if (active)
+        
+        //herumfahren wenn Spiel bereits gestartet ist
+        if (gameStarted) driveAround();
+
+
+    }    
+    
+    //herumfahren um Fahrfunktionen zu testen
+    public void driveAround()
+    {
+        //Schrittverkettung welche den Zustand wechselt sobald der Roboter wieder stillsteht 
+        if (!robot.isMoving())
         {
-            if (!robot.isMoving())
+            state += 1;
+            switch (state) 
             {
-                robot.drive(500,100);
-                active = false;
-            }
-            
-            
+                // Drehe dich um PI/4 rad 
+                case 1 : robot.turn(Math.PI/4, Math.PI/2) ; break;
+                case 2 : robot.drive(400,200)       ; break;
+                
+                case 3 : robot.turn(Math.PI/2, Math.PI/4) ; break;
+                case 4 : robot.drive(220,150)       ; break;
+                default: state = 3-1;
+            }    
         }
         
     }    
-    
-    
 }
