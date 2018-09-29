@@ -64,8 +64,20 @@ public class RobotB
         return true;
     }   
     
-    public boolean turn(int angle, int speed)
+    public boolean turn(double angle, double speed)
     {
+        targetPose.phi = pose.phi + angle;
+        
+        if (angle > 0)
+        {
+            leftDrivingMotor.setSpeed(-speed/2);
+            rightDrivingMotor.setSpeed(speed/2);
+        } else
+        {
+            leftDrivingMotor.setSpeed(speed/2);
+            rightDrivingMotor.setSpeed(-speed/2);
+        }
+        
         return true;
     }
     
@@ -95,11 +107,32 @@ public class RobotB
         // aus der aktuellen pose und den Radgeschwindigkeiten
         
         double sL       =  leftDrivingMotor.getSpeed()*Constants.timeStep/1000000;
-        double sR       =  leftDrivingMotor.getSpeed()*Constants.timeStep/1000000;
+        double sR       =  rightDrivingMotor.getSpeed()*Constants.timeStep/1000000;
         
-        // Kurvenradius nur berechnen wenn sL != sR -> sonst division durch 0
-        if (Math.abs(sL-sR)>0.1)
+
+        if (Math.abs(sL-sR)<0.000001)
         {
+            double phi = pose.phi;
+            double r = sR;
+            double dX = r*Math.sin(phi);
+            double dY = r*Math.cos(phi);
+            pose.setPose(pose.x+dX,pose.y+dY, phi);
+
+        } 
+        else if (Math.abs(sL+sR)<0.000001)
+        {
+            double d = Constants.wheelbase;
+            pose.setPose(pose.x,pose.y, pose.phi + (sR-sL)/(Math.PI*d ) );
+        }else
+        {
+
+            /* FUNKTIONIERT NOCH NICHT!!!
+             * 
+             //TODO sL = 0 abfragen div by zero!!!
+        
+             // Kurvenradius nur berechnen wenn sL != sR -> sonst division durch 0
+             * 
+             * 
             double d = Constants.wheelbase;
             
             double a        = d/(sR/sL -1);
@@ -114,13 +147,7 @@ public class RobotB
             double dY = r*Math.cos(phi);
             
             pose.setPose(pose.x+dX,pose.y+dY, phi);
-        } else
-        {
-            double phi = pose.phi;
-            double r = sR;
-            double dX = r*Math.sin(phi);
-            double dY = r*Math.cos(phi);
-            pose.setPose(pose.x+dX,pose.y+dY, phi);
+            */
         }    
         
         
