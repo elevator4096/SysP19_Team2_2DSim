@@ -11,8 +11,8 @@ public class Simulation
     
     private GUI gui;
     
-    private JLabel redRobotB;
-    private JLabel blueRobotS;
+    private JLabelRot redRobotB;
+    private JLabelRot blueRobotS;
     
     Clock clock = new Clock();
     
@@ -58,11 +58,12 @@ public class Simulation
     private void update() 
     {
         robotB.update();
-        robotS.update();
+        //robotS.update();
         
         softwareB.mainLoop();
+        //softwareS.mainLoop();
         
-        gui.reposition(redRobotB,robotB.pose);
+        gui.repose(redRobotB,robotB.pose);
     }    
     
     private void wait(int waitingTime)

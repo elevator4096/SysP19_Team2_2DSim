@@ -21,12 +21,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+
+
 public class GUI {
 
     private JLayeredPane contentPane; 
     private JFrame frame = new JFrame(GUI.class.getSimpleName());
-    
-
     
 
     protected GUI() {
@@ -44,28 +44,28 @@ public class GUI {
 
     }
     
-    public JLabel createBackground()
+    public JLabelRot createBackground()
     {
         return createImage("images/background.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY);
     }    
     
-    public JLabel drawRobotB(RobotB robot)
+    public JLabelRot drawRobotB(RobotB robot)
     {
         return createImage("images/robotRed.png",0,0,(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y));
     }
     
-    public JLabel drawRobotS(RobotS robot)
+    public JLabelRot drawRobotS(RobotS robot)
     {
         return createImage("images/robotBlue.png",0,0,(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y));
     }
     
-    public JLabel createImage(String imagePath,int width, int height, int xPos, int yPos)
+    public JLabelRot createImage(String imagePath,int width, int height, int xPos, int yPos)
     {
         try {
             ImageIcon image = new ImageIcon( ImageIO.read(new File(imagePath)) );
             frame.setSize(width,height);
             
-            JLabel imageLabel = new JLabel(image);
+            JLabelRot imageLabel = new JLabelRot(image); 
             
             imageLabel.setSize(imageLabel.getPreferredSize());
             imageLabel.setLocation(xPos,Constants.fieldSizeY-yPos);  
@@ -80,9 +80,12 @@ public class GUI {
         }    
     }
     
-    public boolean reposition(JLabel image,Pose pose)
+    public boolean repose(JLabelRot image,Pose pose)
     {
         image.setLocation((int)Math.round(pose.x),Constants.fieldSizeY-(int)Math.round(pose.y));
+        image.setRot(pose.phi);
+        //image.revalidate();
+        image.repaint();
         return true;
     }
 }
