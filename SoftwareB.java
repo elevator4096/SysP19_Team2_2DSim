@@ -1,57 +1,67 @@
+/* Software welche spaeter direkt auf der Abstraktionsebene des echten Roboters laeuft
+ * 
+ * verwendet robot als Abstraktionsebene welche Low-Level Treiber enthaelt und Funktionen wie Drive(Distanz in mm) oder Turn(Winkel in Bogenmass) unterstuetzt
+ * 
+ * Soll mithilfe der Treiber den Roboter praezise steuern, Gegner umfahren, paesse spielen und sich dabei an die Spielregeln halten sowie den finalen Korb werfen
+ */
 public class SoftwareB
 {
-    //simulation time in us
-    long time = 0;
-    
-    //Timer in us
-    private long TimerLeftDrivingMotor = 0;
-    private long TimerRightDrivingMotor = 0;
     
     RobotB robot;
     
+    int state = 0;
+    
+    boolean gameStarted = false;
 
     public SoftwareB()
     {
         
     }
     
-    public void start(RobotB robotB)
+    
+    //initialisiert den Roboter sobald die Simulationsumgebung fertig geladen ist
+    public void init(RobotB robotB)
     {
         robot = robotB;
         
         //Only for REAL robot
-        //while(true) mainLoop();
+        //while(true) mainLoop();     
     }
     
-    public void mainLoop(long newTime)
+    //wird ausgefuehrt sobald das Startsignal empfangen wurde
+    public void start()
     {
-        time = newTime;
-        drive(100,200);
+        gameStarted = true;
+    }
+    
+    //Wird in der Hauptschleife ausgefuehrt(hier von Simulationsumgebung - Real in Endlosschleife)
+    public void mainLoop()
+    {
         
+        //herumfahren wenn Spiel bereits gestartet ist
+        if (gameStarted) driveAround();
+
+
     }    
     
-    //drive distance in mm
-    public boolean drive(int distance, int pwm)
+    //herumfahren um Fahrfunktionen zu testen
+    public void driveAround()
     {
-        robot.rightDrivingMotor.setSpeed(pwm);
-        TimerRightDrivingMotor = time + Math.round(distance/robot.rightDrivingMotor.getSpeed());
-        robot.leftDrivingMotor.setSpeed(pwm);
-        TimerLeftDrivingMotor = time + Math.round(distance/robot.leftDrivingMotor.getSpeed());
+        //Schrittverkettung welche den Zustand wechselt sobald der Roboter wieder stillsteht 
+        if (!robot.isMoving())
+        {
+            state += 1;
+            switch (state) 
+            {
+                // Drehe dich um PI/4 rad 
+                case 1 : robot.turn(Math.PI/4, Math.PI/2) ; break;
+                case 2 : robot.drive(400,200)       ; break;
+                
+                case 3 : robot.turn(Math.PI/2, Math.PI/4) ; break;
+                case 4 : robot.drive(220,150)       ; break;
+                default: state = 3-1;
+            }    
+        }
         
-        return true;
-    }    
-    
-    //Status von diversen Sensoren und Aktoren aktualisieren(Motor nach x Sekunden ausschalten etc.)
-    private void update_status()
-    {
-        //Motoren abschalten wenn timer abgelaufen
-        if (TimerRightDrivingMotor<time)
-        {
-            robot.rightDrivingMotor.setSpeed(128);
-        }
-        if (TimerLeftDrivingMotor<time)
-        {
-            robot.leftDrivingMotor.setSpeed(128);
-        }
     }    
 }
