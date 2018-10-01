@@ -59,27 +59,28 @@ public class GUI {
     //Hintergrundbild laden und darstellen - sowie Mausmonitor aktivieren
     public JLabelRot createBackground()
     {
-        JLabelRot background = createImage("images/background.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY);
+        JLabelRot background = createImage("images/background.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY,false);
         mouseMonitor = new MouseMonitor(background);
         return background;
     }  
     //Bild von Gegner laden und darstellen
     public JLabelRot drawOpponent(Opponent opponent)
     {
-        return createImage("images/opponent.png",0,0,(int)Math.round(opponent.pose.x),(int)Math.round(opponent.pose.y));
+        return createImage("images/opponent.png",0,0,(int)Math.round(opponent.pose.x),(int)Math.round(opponent.pose.y),true);
     }
     //Bild von rotem Roboter laden und darstellen
     public JLabelRot drawRobotB(RobotB robot)
     {
-        return createImage("images/robotRed.png",0,0,(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y));
+        return createImage("images/robotRed.png",0,0,(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y),true);
     }
     //Bild von blauen Roboter laden und darstellen
     public JLabelRot drawRobotS(RobotS robot)
     {
-        return createImage("images/robotBlue.png",0,0,(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y));
+        return createImage("images/robotBlue.png",0,0,(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y),true);
     }
-    // Funktion um Bilder zu laden und darzustellen
-    public JLabelRot createImage(String imagePath,int width, int height, int xPos, int yPos)
+    
+    // Funktion um Bilder zu laden und darzustellen (pfad,minBreite,minHoehe, xPosition, yPosition, Bild zentriert plazieren)
+    private JLabelRot createImage(String imagePath,int width, int height, int xPos, int yPos, boolean centered)
     {
         try {
             ImageIcon image = new ImageIcon( ImageIO.read(new File(imagePath)) );
@@ -88,13 +89,17 @@ public class GUI {
             JLabelRot imageLabel = new JLabelRot(image); 
             
             imageLabel.setSize(imageLabel.getPreferredSize());
-            imageLabel.setLocation(xPos,(Constants.fieldSizeY-yPos));  
+            //Wenn zentriert Koordinatenursprung fuer positionierung in Bildmitte verschieben
+            if (centered)
+            {
+                imageLabel.setLocation(xPos-imageLabel.getPreferredSize().width/2,(Constants.fieldSizeY-yPos)-imageLabel.getPreferredSize().height/2);  
+            }else
+            {
+                imageLabel.setLocation(xPos,(Constants.fieldSizeY-yPos)); 
+            }    
             contentPane.add(imageLabel);
          
             contentPane.repaint();
-            
-            System.out.println(imageLabel.getPreferredSize());
-            
             
             return imageLabel;
         } catch (Exception e) {
@@ -103,10 +108,10 @@ public class GUI {
         }    
     }
     
-    //aendert die Pose(Position und Richtung) eines Bildes
+    //aendert die Pose(Position und Richtung) eines Bildes - automatisch zentriert
     public boolean repose(JLabelRot image,Pose pose)
     {
-        image.setLocation((int)Math.round(pose.x),Constants.fieldSizeY-(int)Math.round(pose.y));
+        image.setLocation((int)Math.round(pose.x)-image.getPreferredSize().width/2,Constants.fieldSizeY-(int)Math.round(pose.y)-image.getPreferredSize().height/2);
         image.setRot(pose.phi);
         //image.revalidate();
         image.repaint();

@@ -21,7 +21,7 @@ public class Field
             gui.drawOpponent(opponent);
         }
         
-                //Hintergrundbild laden und darstellen
+        //Hintergrundbild laden und darstellen
         background = gui.createBackground();
     }
 }

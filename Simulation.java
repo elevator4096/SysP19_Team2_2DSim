@@ -35,7 +35,7 @@ public class Simulation
     
     Clock clock = new Clock();
     
-    public static void main()
+    public static void main(String[] args)
     {
         //Einzelne Simulation erzeugen
         Simulation simulation1;
@@ -52,8 +52,8 @@ public class Simulation
         opponentPositions.add(new Pose(628,503,0));
         
         //Roboter mit Name und Pose(Position und Richtung) erzeugen
-        robotB  = new RobotB("robotB_Red",new Pose(50,200,0));
-        robotS = new RobotS("robotS_Blue",new Pose(550,200,0));
+        robotB  = new RobotB("robotB_Red",new Pose(50,120,0));
+        robotS = new RobotS("robotS_Blue",new Pose(550,120,0));
         
         //Software von Roboter initialisieren
         softwareB.init(robotB);
