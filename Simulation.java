@@ -3,7 +3,8 @@
  */
 
 
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JLabel;
 
 
@@ -19,10 +20,18 @@ public class Simulation
     
     //Grafische Oberflaeche
     private GUI gui;
+    private Field field;
+    private List<Pose> opponentPositions = new ArrayList<Pose>();
     
     //drehbare Bilder von Robotern
     private JLabelRot redRobotB;
     private JLabelRot blueRobotS;
+    
+    //Hintergrundbild
+    private JLabelRot background;
+    
+    //Schleifen Zaehlvariable
+    private int counter = 0;
     
     Clock clock = new Clock();
     
@@ -36,6 +45,11 @@ public class Simulation
     
     public Simulation(boolean showGui)
     {
+        //Gegnerpositionen manuell festlegen
+        opponentPositions.add(new Pose(20,20,0)); 
+        opponentPositions.add(new Pose(40,40,0));
+        opponentPositions.add(new Pose(60,60,0));
+        opponentPositions.add(new Pose(80,80,0));
         
         //Roboter mit Name und Pose(Position und Richtung) erzeugen
         robotB  = new RobotB("robotB_Red",new Pose(50,200,0));
@@ -53,30 +67,36 @@ public class Simulation
         blueRobotS = gui.drawRobotS(robotS);
         
         //Hintergrundbild laden und darstellen
-        gui.createBackground();
+        background = gui.createBackground();
+        
+        //Spielfeld mit Gegnern erzeugen
+        field = new Field(background,opponentPositions);
         
         //startsignal an Roboter senden
         softwareB.start();
         //softwareS.start();
         
         //Hauptschleife der Simulation wird ausgefuehrt bis Zeit abgelaufen
-        int counter = 0;
-        while(clock.tick()<60000000) // 60 s Simulationszeit
-        {
-            counter++;
-            
-            //Simulationsschritt ausfuehren
-            update();
-            
-            // Alle 20 ms simulierter Zeit 20ms warten um Echtzeitsimulation mit ca 50 FPS zu erhalten
-            // Simulationsgeschwindigkeit kann ueber Constants.simulationSpeed veraendert werden
-            if (counter*Constants.timeStep > 20000*Constants.simulationSpeed/100)
-            {
-                wait(20);
-                counter -= 20000/Constants.timeStep;
-            }
-        }
+        // 60 s Simulationszeit
+        counter = 0;
+        while(clock.tick()<60000000) mainLoop();
     }   
+    
+    private void mainLoop()
+    {
+        counter++;
+        
+        //Simulationsschritt ausfuehren
+        update();
+        
+        // Alle 20 ms simulierter Zeit 20ms warten um Echtzeitsimulation mit ca 50 FPS zu erhalten
+        // Simulationsgeschwindigkeit kann ueber Constants.simulationSpeed veraendert werden
+        if (counter*Constants.timeStep > 20000*Constants.simulationSpeed/100)
+        {
+            wait(20);
+            counter -= 20000/Constants.timeStep;
+        }
+    }    
     
     //Einzelner Simulationsschritt
     private void update() 
