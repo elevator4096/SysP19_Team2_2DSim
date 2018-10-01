@@ -38,6 +38,9 @@ public class GUI {
     private JLayeredPane contentPane; 
     //Fenster sichtbar/unsichtbar
     private boolean showGui;
+    
+    //Mausmonitor(registriert Mausklicks)
+    private MouseMonitor mouseMonitor;
 
     // Fenstereinstellungen in Konstruktor anpassen( Groesse, Transparenz, etc.)
     protected GUI(boolean showGui) {
@@ -53,10 +56,12 @@ public class GUI {
 
     }
     
-    //Hintergrundbild laden und darstellen
+    //Hintergrundbild laden und darstellen - sowie Mausmonitor aktivieren
     public JLabelRot createBackground()
     {
-        return createImage("images/background.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY);
+        JLabelRot background = createImage("images/background.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY);
+        mouseMonitor = new MouseMonitor(background);
+        return background;
     }  
     //Bild von Gegner laden und darstellen
     public JLabelRot drawOpponent(Opponent opponent)
@@ -83,10 +88,13 @@ public class GUI {
             JLabelRot imageLabel = new JLabelRot(image); 
             
             imageLabel.setSize(imageLabel.getPreferredSize());
-            imageLabel.setLocation(xPos,Constants.fieldSizeY-yPos);  
+            imageLabel.setLocation(xPos,(Constants.fieldSizeY-yPos));  
             contentPane.add(imageLabel);
          
             contentPane.repaint();
+            
+            System.out.println(imageLabel.getPreferredSize());
+            
             
             return imageLabel;
         } catch (Exception e) {

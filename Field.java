@@ -22,6 +22,6 @@ public class Field
         }
         
                 //Hintergrundbild laden und darstellen
-        this.background = background = gui.createBackground();
+        background = gui.createBackground();
     }
 }

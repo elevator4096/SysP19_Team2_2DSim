@@ -46,10 +46,10 @@ public class Simulation
     public Simulation(boolean showGui)
     {
         //Gegnerpositionen manuell festlegen
-        opponentPositions.add(new Pose(20,20,0)); 
-        opponentPositions.add(new Pose(40,40,0));
-        opponentPositions.add(new Pose(60,60,0));
-        opponentPositions.add(new Pose(80,80,0));
+        opponentPositions.add(new Pose(122,242,0)); 
+        opponentPositions.add(new Pose(299,245,0));
+        opponentPositions.add(new Pose(458,504,0));
+        opponentPositions.add(new Pose(628,503,0));
         
         //Roboter mit Name und Pose(Position und Richtung) erzeugen
         robotB  = new RobotB("robotB_Red",new Pose(50,200,0));
