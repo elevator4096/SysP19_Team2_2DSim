@@ -21,7 +21,6 @@ public class RobotB
     // Aktoren
     public DrivingMotor leftDrivingMotor;
     public DrivingMotor rightDrivingMotor;
-    public Servo        sharpSensor1Servo;
     public BallThrower  ballThrower1;
 
     //Konstruktor um Namen und Pose(Position und Richtung) des Roboters festzulegen
@@ -39,7 +38,6 @@ public class RobotB
         //Erzeuge Aktoren
         leftDrivingMotor        = new DrivingMotor();
         rightDrivingMotor       = new DrivingMotor();
-        sharpSensor1Servo       = new Servo();
         ballThrower1            = new BallThrower();
         
         //Zielpose(Position und Richtung) auf aktuelle pose setzen
