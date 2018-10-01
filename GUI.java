@@ -36,10 +36,12 @@ public class GUI {
     private JFrame frame = new JFrame(GUI.class.getSimpleName());
     // JLayeredPane dient dazu, in unterschiedlichen Ebenen verschiedene Komponenten darzustellen
     private JLayeredPane contentPane; 
-    
+    //Fenster sichtbar/unsichtbar
+    private boolean showGui;
 
     // Fenstereinstellungen in Konstruktor anpassen( Groesse, Transparenz, etc.)
-    protected GUI() {
+    protected GUI(boolean showGui) {
+        this.showGui = showGui;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         contentPane = new JLayeredPane();        
         contentPane.setBackground(Color.WHITE);
@@ -47,7 +49,7 @@ public class GUI {
         frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         frame.setContentPane(contentPane);
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(true);
+        frame.setVisible(showGui);
 
     }
     
@@ -55,7 +57,12 @@ public class GUI {
     public JLabelRot createBackground()
     {
         return createImage("images/background.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY);
-    }    
+    }  
+    //Bild von Gegner laden und darstellen
+    public JLabelRot drawOpponent(Opponent opponent)
+    {
+        return createImage("images/opponent.png",0,0,(int)Math.round(opponent.pose.x),(int)Math.round(opponent.pose.y));
+    }
     //Bild von rotem Roboter laden und darstellen
     public JLabelRot drawRobotB(RobotB robot)
     {

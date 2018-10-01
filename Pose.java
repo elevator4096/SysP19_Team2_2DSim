@@ -6,10 +6,16 @@ public class Pose
     public double y;    // y koord
     public double phi;  // Drehwinkel
     
-    //Anfangspose in Konstruktor festlegen
+    // Konstruktor: Anfangspose mit x,y,drehwinkel festlegen
     public Pose(double x, double y, double phi)
     {
         setPose(x, y, phi);
+    }
+    
+    // Konstruktor: Anfangspose direkt zuweisen
+    public Pose(Pose pose)
+    {
+        this.setPose(pose);
     }
     
     // neue Zielposition anhand von bekannter Richtung und Distanz ermitteln

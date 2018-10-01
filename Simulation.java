@@ -60,18 +60,15 @@ public class Simulation
         //softwareS.init(robotS);
         
         //Grafische Oberflaeche erzeugen
-        gui = new GUI();
+        gui = new GUI(showGui);
         
         //Drehbare Bilder von Robotern laden und darstellen
         redRobotB  = gui.drawRobotB(robotB);
         blueRobotS = gui.drawRobotS(robotS);
         
-        //Hintergrundbild laden und darstellen
-        background = gui.createBackground();
-        
-        //Spielfeld mit Gegnern erzeugen
-        field = new Field(background,opponentPositions);
-        
+        //Spielfeld mit Gegnern erzeugen und darstellen
+        field = new Field(gui,opponentPositions);
+             
         //startsignal an Roboter senden
         softwareB.start();
         //softwareS.start();
@@ -79,10 +76,10 @@ public class Simulation
         //Hauptschleife der Simulation wird ausgefuehrt bis Zeit abgelaufen
         // 60 s Simulationszeit
         counter = 0;
-        while(clock.tick()<60000000) mainLoop();
+        while(clock.tick()<60000000) mainLoop(showGui);
     }   
     
-    private void mainLoop()
+    private void mainLoop(boolean waiting)
     {
         counter++;
         
@@ -93,7 +90,7 @@ public class Simulation
         // Simulationsgeschwindigkeit kann ueber Constants.simulationSpeed veraendert werden
         if (counter*Constants.timeStep > 20000*Constants.simulationSpeed/100)
         {
-            wait(20);
+            if (waiting) wait(20);
             counter -= 20000/Constants.timeStep;
         }
     }    
