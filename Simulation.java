@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-/* Hinzugefügter Testkommentar von Chris
- * 
- */
 
-=======
 /* Simulation des Gesamten Spielablaufs durch serielles ausfuehren der einzelnen Updateroutinen der zu simulierenden Komponenten
  * und Darstellung der Zustaende simulierter Objekte durch entsprechende GUI Aufrufe
  */
@@ -11,8 +6,6 @@
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JLabel;
->>>>>>> master
 
 import javax.swing.JLabel;
 
@@ -54,11 +47,26 @@ public class Simulation
     public Simulation(boolean showGui)
     {
         //Gegnerpositionen manuell festlegen
-        opponentPositions.add(new Pose(122,242,0)); 
-        opponentPositions.add(new Pose(299,245,0));
-        opponentPositions.add(new Pose(458,504,0));
-        opponentPositions.add(new Pose(628,503,0));
+        opponentPositions.add(new Pose(126,238,0));
+        opponentPositions.add(new Pose(296,237,0));
+        opponentPositions.add(new Pose(458,496,0));
+        opponentPositions.add(new Pose(628,497,0));
         
+        /*     
+        opponentPositions.add(new Pose(126,238,0));
+        opponentPositions.add(new Pose(296,237,0));
+        opponentPositions.add(new Pose(459,237,0));
+        opponentPositions.add(new Pose(627,239,0));
+        opponentPositions.add(new Pose(126,498,0));
+        opponentPositions.add(new Pose(297,497,0));
+        opponentPositions.add(new Pose(458,496,0));
+        opponentPositions.add(new Pose(628,497,0));
+        opponentPositions.add(new Pose(122,758,0));
+        opponentPositions.add(new Pose(298,754,0));
+        opponentPositions.add(new Pose(457,756,0));
+        opponentPositions.add(new Pose(628,755,0));
+         */
+
         //Roboter mit Name und Pose(Position und Richtung) erzeugen
         robotB  = new RobotB("robotB_Red",new Pose(50,120,0));
         robotS = new RobotS("robotS_Blue",new Pose(550,120,0));
