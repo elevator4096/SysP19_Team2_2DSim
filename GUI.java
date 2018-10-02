@@ -83,7 +83,11 @@ public class GUI {
     private JLabelRot createImage(String imagePath,int width, int height, int xPos, int yPos, boolean centered)
     {
         try {
-            ImageIcon image = new ImageIcon( ImageIO.read(new File(imagePath)) );
+            //ImageIcon image = new ImageIcon( ImageIO.read(new File(imagePath)) );
+            
+            java.net.URL imageURL = GUI.class.getResource(imagePath);
+            ImageIcon image = new ImageIcon(imageURL);
+            
             frame.setSize(width,height);
             
             JLabelRot imageLabel = new JLabelRot(image); 
