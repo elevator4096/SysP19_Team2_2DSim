@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+/* Hinzugefügter Testkommentar von Chris
+ * 
+ */
+
+=======
 /* Simulation des Gesamten Spielablaufs durch serielles ausfuehren der einzelnen Updateroutinen der zu simulierenden Komponenten
  * und Darstellung der Zustaende simulierter Objekte durch entsprechende GUI Aufrufe
  */
@@ -6,7 +12,9 @@
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
+>>>>>>> master
 
+import javax.swing.JLabel;
 
 public class Simulation
 {
