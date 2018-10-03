@@ -1,17 +1,11 @@
-<<<<<<< HEAD
-/* Hinzugefügter Testkommentar von Chris
- * 
- */
 
-=======
 /* Simulation des Gesamten Spielablaufs durch serielles ausfuehren der einzelnen Updateroutinen der zu simulierenden Komponenten
  * und Darstellung der Zustaende simulierter Objekte durch entsprechende GUI Aufrufe
  */
 
 
-
-import javax.swing.JLabel;
->>>>>>> master
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 
@@ -27,14 +21,22 @@ public class Simulation
     
     //Grafische Oberflaeche
     private GUI gui;
+    private Field field;
+    private List<Pose> opponentPositions = new ArrayList<Pose>();
     
     //drehbare Bilder von Robotern
     private JLabelRot redRobotB;
     private JLabelRot blueRobotS;
     
+    //Hintergrundbild
+    private JLabelRot background;
+    
+    //Schleifen Zaehlvariable
+    private int counter = 0;
+    
     Clock clock = new Clock();
     
-    public static void main()
+    public static void main(String[] args)
     {
         //Einzelne Simulation erzeugen
         Simulation simulation1;
@@ -44,47 +46,70 @@ public class Simulation
     
     public Simulation(boolean showGui)
     {
+        //Gegnerpositionen manuell festlegen
+        opponentPositions.add(new Pose(126,238,0));
+        opponentPositions.add(new Pose(296,237,0));
+        opponentPositions.add(new Pose(458,496,0));
+        opponentPositions.add(new Pose(628,497,0));
         
+        /*     
+        opponentPositions.add(new Pose(126,238,0));
+        opponentPositions.add(new Pose(296,237,0));
+        opponentPositions.add(new Pose(459,237,0));
+        opponentPositions.add(new Pose(627,239,0));
+        opponentPositions.add(new Pose(126,498,0));
+        opponentPositions.add(new Pose(297,497,0));
+        opponentPositions.add(new Pose(458,496,0));
+        opponentPositions.add(new Pose(628,497,0));
+        opponentPositions.add(new Pose(122,758,0));
+        opponentPositions.add(new Pose(298,754,0));
+        opponentPositions.add(new Pose(457,756,0));
+        opponentPositions.add(new Pose(628,755,0));
+         */
+
         //Roboter mit Name und Pose(Position und Richtung) erzeugen
-        robotB  = new RobotB("robotB_Red",new Pose(50,200,0));
-        robotS = new RobotS("robotS_Blue",new Pose(550,200,0));
+        robotB  = new RobotB("robotB_Red",new Pose(50,120,0));
+        robotS = new RobotS("robotS_Blue",new Pose(550,120,0));
         
         //Software von Roboter initialisieren
         softwareB.init(robotB);
         //softwareS.init(robotS);
         
         //Grafische Oberflaeche erzeugen
-        gui = new GUI();
+        gui = new GUI(showGui);
         
         //Drehbare Bilder von Robotern laden und darstellen
         redRobotB  = gui.drawRobotB(robotB);
         blueRobotS = gui.drawRobotS(robotS);
         
-        //Hintergrundbild laden und darstellen
-        gui.createBackground();
-        
+        //Spielfeld mit Gegnern erzeugen und darstellen
+        field = new Field(gui,opponentPositions);
+             
         //startsignal an Roboter senden
         softwareB.start();
         //softwareS.start();
         
         //Hauptschleife der Simulation wird ausgefuehrt bis Zeit abgelaufen
-        int counter = 0;
-        while(clock.tick()<60000000) // 60 s Simulationszeit
-        {
-            counter++;
-            
-            //Simulationsschritt ausfuehren
-            update();
-            
-            // Alle 20 ms simulierter Zeit 20ms warten um Echtzeitsimulation mit ca 50 FPS zu erhalten
-            // Simulationsgeschwindigkeit kann ueber Constants.simulationSpeed veraendert werden
-            if (counter*Constants.timeStep > 20000*Constants.simulationSpeed/100)
-            {
-                wait(20);
-                counter -= 20000/Constants.timeStep;
-            }
-        }
+        // 60 s Simulationszeit
+        counter = 0;
+        while(clock.tick()<60000000) mainLoop(showGui);
     }   
+    
+    private void mainLoop(boolean waiting)
+    {
+        counter++;
+        
+        //Simulationsschritt ausfuehren
+        update();
+        
+        // Alle 20 ms simulierter Zeit 20ms warten um Echtzeitsimulation mit ca 50 FPS zu erhalten
+        // Simulationsgeschwindigkeit kann ueber Constants.simulationSpeed veraendert werden
+        if (counter*Constants.timeStep > 20000*Constants.simulationSpeed/100)
+        {
+            if (waiting) wait(20);
+            counter -= 20000/Constants.timeStep;
+        }
+    }    
     
     //Einzelner Simulationsschritt
     private void update() 

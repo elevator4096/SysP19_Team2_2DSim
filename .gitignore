@@ -10,6 +10,9 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# Website content
+www/
+
 # Package Files #
 *.war
 *.nar
@@ -20,3 +23,11 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+www/test.jar.js
+www/test.jar
+www/test.bat
+www/index.html
+www/index.html
+www/test.bat
+www/test.jar
+www/test.jar.js
