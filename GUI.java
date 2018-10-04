@@ -57,9 +57,16 @@ public class GUI {
     }
     
     //Hintergrundbild laden und darstellen - sowie Mausmonitor aktivieren
-    public JLabelRot createBackground()
+    public JLabelRot createBackground1()
     {
-        JLabelRot background = createImage("images/background.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY,false);
+        JLabelRot background = createImage("images/background1.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY,false);
+        mouseMonitor = new MouseMonitor(background);
+        return background;
+    }  
+    //Hintergrundbild laden und darstellen - sowie Mausmonitor aktivieren
+    public JLabelRot createBackground2()
+    {
+        JLabelRot background = createImage("images/background2.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY,false);
         mouseMonitor = new MouseMonitor(background);
         return background;
     }  

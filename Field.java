@@ -22,6 +22,7 @@ public class Field
         }
         
         //Hintergrundbild laden und darstellen
-        background = gui.createBackground();
+        background = gui.createBackground1();
+        //background = gui.createBackground2();
     }
 }
