@@ -77,19 +77,27 @@ public class GUI {
     }
     
     //Hintergrundbild laden und darstellen - sowie Mausmonitor aktivieren
-    public JLabelRot createBackground1()
+    public BufferedImage createBackground1()
     {
-        JLabelRot background = createImage("images/background1.png",0,Constants.fieldSizeMMY,false);
+        String imagePath = "images/background1.png";
+        JLabelRot background = createImage(imagePath,0,Constants.fieldSizeMMY,false);
         mouseMonitor = new MouseMonitor(background);
-        return background;
+        
+        java.net.URL imageURL = GUI.class.getResource(imagePath);
+        
+        BufferedImage bufferedImage = null;
+        try 
+        {
+            bufferedImage = ImageIO.read(imageURL);
+        } catch (IOException e) 
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }    
+        
+        return bufferedImage;
     }  
-    //Hintergrundbild laden und darstellen - sowie Mausmonitor aktivieren
-    public JLabelRot createBackground2()
-    {
-        JLabelRot background = createImage("images/background2.png",0,Constants.fieldSizeMMY,false);
-        mouseMonitor = new MouseMonitor(background);
-        return background;
-    }  
+    
     //Bild von Gegner laden und darstellen
     public JLabelRot drawOpponent(Opponent opponent)
     {

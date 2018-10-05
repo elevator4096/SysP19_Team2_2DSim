@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
+import java.awt.image.BufferedImage;
 public class Field
 {
-    private JLabelRot background; 
+    private BufferedImage background;
     private List<Opponent> opponents = new ArrayList<Opponent>();
     
     //Konstruktor: Hintergrund abspeichern und Gegner erzeugen
@@ -23,6 +25,7 @@ public class Field
         
         //Hintergrundbild laden und darstellen
         background = gui.createBackground1();
-        //background = gui.createBackground2();
+        System.out.println(background);
+        //background.
     }
 }
