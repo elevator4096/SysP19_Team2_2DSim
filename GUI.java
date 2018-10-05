@@ -13,6 +13,8 @@ import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Random;
+import java.awt.image.BufferedImage;
+import java.awt.Image;
 //import von Swing Grafikkomponenten
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -41,9 +43,25 @@ public class GUI {
     
     //Mausmonitor(registriert Mausklicks)
     private MouseMonitor mouseMonitor;
+    
+    //Groesse des GUI
+    private  int pixelPmm;
+    private  int guiSizeX;
+    private  int guiSizeY;
 
     // Fenstereinstellungen in Konstruktor anpassen( Groesse, Transparenz, etc.)
     protected GUI(boolean showGui) {
+        
+        if (Toolkit.getDefaultToolkit().getScreenSize().getHeight()>2000)
+        {
+            pixelPmm = 2;
+        } else 
+        {
+            pixelPmm = 1;
+        }    
+        guiSizeX      = Constants.fieldSizeMMX*pixelPmm; // pixels
+        guiSizeY     = Constants.fieldSizeMMY*pixelPmm; // pixels
+        
         this.showGui = showGui;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         contentPane = new JLayeredPane();        
@@ -53,60 +71,68 @@ public class GUI {
         frame.setContentPane(contentPane);
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         frame.setVisible(showGui);
+        
+        frame.setSize(guiSizeX+15,guiSizeY+35);
 
     }
     
     //Hintergrundbild laden und darstellen - sowie Mausmonitor aktivieren
     public JLabelRot createBackground1()
     {
-        JLabelRot background = createImage("images/background1.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY,false);
+        JLabelRot background = createImage("images/background1.png",0,Constants.fieldSizeMMY,false);
         mouseMonitor = new MouseMonitor(background);
         return background;
     }  
     //Hintergrundbild laden und darstellen - sowie Mausmonitor aktivieren
     public JLabelRot createBackground2()
     {
-        JLabelRot background = createImage("images/background2.png",Constants.fieldSizeX+15,Constants.fieldSizeY+35,0,Constants.fieldSizeY,false);
+        JLabelRot background = createImage("images/background2.png",0,Constants.fieldSizeMMY,false);
         mouseMonitor = new MouseMonitor(background);
         return background;
     }  
     //Bild von Gegner laden und darstellen
     public JLabelRot drawOpponent(Opponent opponent)
     {
-        return createImage("images/opponent.png",0,0,(int)Math.round(opponent.pose.x),(int)Math.round(opponent.pose.y),true);
+        return createImage("images/opponent.png",(int)Math.round(opponent.pose.x),(int)Math.round(opponent.pose.y),true);
     }
     //Bild von rotem Roboter laden und darstellen
     public JLabelRot drawRobotB(RobotB robot)
     {
-        return createImage("images/robotRed.png",0,0,(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y),true);
+        return createImage("images/robotRed.png",(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y),true);
     }
     //Bild von blauen Roboter laden und darstellen
     public JLabelRot drawRobotS(RobotS robot)
     {
-        return createImage("images/robotBlue.png",0,0,(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y),true);
+        return createImage("images/robotBlue.png",(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y),true);
     }
     
     // Funktion um Bilder zu laden und darzustellen (pfad,minBreite,minHoehe, xPosition, yPosition, Bild zentriert plazieren)
-    private JLabelRot createImage(String imagePath,int width, int height, int xPos, int yPos, boolean centered)
+    private JLabelRot createImage(String imagePath,int xPos, int yPos, boolean centered)
     {
         try {
             //ImageIcon image = new ImageIcon( ImageIO.read(new File(imagePath)) );
             
+            xPos *= pixelPmm; 
+            yPos *= pixelPmm; 
+            
             java.net.URL imageURL = GUI.class.getResource(imagePath);
             ImageIcon image = new ImageIcon(imageURL);
             
-            frame.setSize(width,height);
+            image = scaleImage(image,image.getIconWidth()*pixelPmm,image.getIconHeight()*pixelPmm);
+            
+            
             
             JLabelRot imageLabel = new JLabelRot(image); 
             
             imageLabel.setSize(imageLabel.getPreferredSize());
+            
             //Wenn zentriert Koordinatenursprung fuer positionierung in Bildmitte verschieben
             if (centered)
             {
-                imageLabel.setLocation(xPos-imageLabel.getPreferredSize().width/2,(Constants.fieldSizeY-yPos)-imageLabel.getPreferredSize().height/2);  
+                imageLabel.setLocation(xPos-imageLabel.getPreferredSize().width/2,(guiSizeY-yPos)-imageLabel.getPreferredSize().height/2);  
             }else
             {
-                imageLabel.setLocation(xPos,(Constants.fieldSizeY-yPos)); 
+                imageLabel.setLocation(xPos,(guiSizeY-yPos)); 
             }    
             contentPane.add(imageLabel);
          
@@ -122,10 +148,32 @@ public class GUI {
     //aendert die Pose(Position und Richtung) eines Bildes - automatisch zentriert
     public boolean repose(JLabelRot image,Pose pose)
     {
-        image.setLocation((int)Math.round(pose.x)-image.getPreferredSize().width/2,Constants.fieldSizeY-(int)Math.round(pose.y)-image.getPreferredSize().height/2);
+        image.setLocation((int)Math.round(pose.x*pixelPmm)-image.getPreferredSize().width/2,guiSizeY-(int)Math.round(pose.y*pixelPmm)-image.getPreferredSize().height/2);
         image.setRot(pose.phi);
         //image.revalidate();
         image.repaint();
         return true;
+    }
+    
+    //Bilder skalieren
+    private ImageIcon scaleImage(ImageIcon icon, int w, int h)
+    {
+        int nw = icon.getIconWidth();
+        int nh = icon.getIconHeight();
+        
+        /*
+        if(icon.getIconWidth() > w)
+        {
+          nw = w;
+          nh = (nw * icon.getIconHeight()) / icon.getIconWidth();
+        }
+
+        if(nh > h)
+        {
+          nh = h;
+          nw = (icon.getIconWidth() * nh) / icon.getIconHeight();
+        }
+        */
+        return new ImageIcon(icon.getImage().getScaledInstance(w, h, Image.SCALE_DEFAULT));
     }
 }
