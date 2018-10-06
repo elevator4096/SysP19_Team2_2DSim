@@ -36,7 +36,7 @@ public class MouseMonitor {
         public void mousePressed(MouseEvent e) {
             clickedComponent = e.getComponent();
             location = SwingUtilities.convertPoint(clickedComponent, e.getPoint(), clickedComponent.getParent());
-            location = new Point((int)location.getX(),Constants.fieldSizeY-(int)location.getY());
+            location = new Point((int)location.getX(),Constants.fieldSizeMMY-(int)location.getY());
             System.out.println(location);
         }
         

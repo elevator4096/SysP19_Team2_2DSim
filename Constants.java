@@ -8,12 +8,11 @@ public abstract class Constants
     
     //Simulation
     public static final double simulationSpeed = 100; // % Realtime
-    
-    public static final int fieldSizeX      = 760; // pixels
-    public static final int fieldSizeY      = 1000; // pixels
-    
-    public static final double pixelPmm     = 1;
     public static final int timeStep        = 900; // us
+    
+    //Feldgroesse in mm(unabhaengig von Bildschirmgroesse)
+    public static final int fieldSizeMMX      = 760; // pixels
+    public static final int fieldSizeMMY      = 1000; // pixels  
     
     public static final int maxXError       = 2;
     public static final int maxYError       = 2;
