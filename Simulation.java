@@ -92,7 +92,7 @@ public class Simulation
         //Hauptschleife der Simulation wird ausgefuehrt bis Zeit abgelaufen
         // 60 s Simulationszeit
         counter = 0;
-        while(clock.tick()<6000000) mainLoop(showGui);
+        while(clock.tick()<60000000) mainLoop(showGui);
     }   
     
     private void mainLoop(boolean waiting)

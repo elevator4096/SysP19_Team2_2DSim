@@ -61,12 +61,12 @@ public class RobotB
         return true;
     }   
     
-    //drehe um Mittelpunkt des Roboters um Winkel in rad und Winkelgeschwindigkeit in rad/s
+    //drehe um Mittelpunkt des Roboters um Winkel in rad und Winkelgeschwindigkeit in rad/s (+ rechts drehen, - links drehen) 
     public boolean turn(double angle, double angularSpeed)
     {
-        targetPose.phi = pose.phi + angle;
+        targetPose.phi = pose.addPhi(angle);
         
-        double motorSpeed = angularSpeed*Constants.wheelbase*Math.PI/2;
+        double motorSpeed = Math.signum(angle)*angularSpeed*Constants.wheelbase*Math.PI/2;
         leftDrivingMotor.setSpeed(-motorSpeed);
         rightDrivingMotor.setSpeed(motorSpeed);
         
@@ -120,7 +120,7 @@ public class RobotB
         else if (Math.abs(sL+sR)<0.000001)
         {
             double d = Constants.wheelbase;
-            pose.setPose(pose.x,pose.y, pose.phi + (sR-sL)/(Math.PI*d ) );
+            pose.setPose(pose.x,pose.y, pose.addPhi((sR-sL)/(Math.PI*d ) ));
         }
         //Radgeschwindigkeiten sind unterschiedlich -> Fahre teil eines Kreisabschnittes -> Funktioniert noch nicht richtig
         else
@@ -132,7 +132,8 @@ public class RobotB
         
              // Kurvenradius nur berechnen wenn sL != sR -> sonst division durch 0
              * 
-             * 
+             */
+ 
             double d = Constants.wheelbase;
             
             double a        = d/(sR/sL -1);
@@ -141,13 +142,13 @@ public class RobotB
             double beta     = Math.PI/2 - alpha/2;
             double r = 2*(d+a)*Math.sin(alpha/2);
             
-            double phi = pose.phi + Math.PI/2 - beta;
+            double phi = pose.addPhi(Math.PI/2 - beta);
             
             double dX = r*Math.sin(phi);
             double dY = r*Math.cos(phi);
             
             pose.setPose(pose.x+dX,pose.y+dY, phi);
-            */
+            
         }    
         
         
