@@ -54,7 +54,7 @@ public class SoftwareB
         
         
         
-        robot.rightDrivingMotor.setSpeed(-100);
+        robot.rightDrivingMotor.setSpeed(0);
         robot.leftDrivingMotor.setSpeed(100);
     }
     
