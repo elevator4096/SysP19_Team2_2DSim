@@ -81,7 +81,7 @@ public class GUI {
     {
         String imagePath = "images/background1.png";
         JLabelRot background = createImage(imagePath,0,Constants.fieldSizeMMY,false);
-        mouseMonitor = new MouseMonitor(background);
+        mouseMonitor = new MouseMonitor(background,pixelPmm);
         
         java.net.URL imageURL = GUI.class.getResource(imagePath);
         

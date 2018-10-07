@@ -34,7 +34,7 @@ public class SoftwareB
         gameStarted = true;
         
         //NUR ZUM TESTEN( Zielposition des Roboters weit ausserhalb setzen)
-        robot.drive(200,100)       ;
+        robot.drive(2000,100)       ;
     }
     
     //Wird in der Hauptschleife ausgefuehrt(hier von Simulationsumgebung - Real in Endlosschleife)
@@ -54,7 +54,7 @@ public class SoftwareB
         
         
         
-        robot.rightDrivingMotor.setSpeed(0.0001);
+        robot.rightDrivingMotor.setSpeed(-100);
         robot.leftDrivingMotor.setSpeed(100);
     }
     

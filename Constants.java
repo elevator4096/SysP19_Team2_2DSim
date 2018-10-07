@@ -4,7 +4,7 @@ public abstract class Constants
     public static final double g = 9.81;
     
     //Mechanik
-    public static final int wheelbase = 100; // Achsenabstand in mm
+    public static final int wheelbase = 160; // Achsenabstand in mm
     
     //Simulation
     public static final double simulationSpeed = 100; // % Realtime
