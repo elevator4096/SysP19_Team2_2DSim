@@ -39,16 +39,6 @@ public class Field
         //Hintergrund Weichzeichnen um Helligkeitssensoren besser simulieren zu koennen
         background = Blur(background);
         
-        try{
-            File outputfile = new File("test.png");
-            ImageIO.write(background, "png", outputfile);
-        } catch (IOException e) 
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } 
-        
-        //background.
     }
     
     //Liefert den Helligkeitswert des Gruenanteils eines Pixels

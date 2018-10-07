@@ -15,6 +15,9 @@ import java.net.URL;
 import java.util.Random;
 import java.awt.image.BufferedImage;
 import java.awt.Image;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 //import von Swing Grafikkomponenten
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -183,5 +186,27 @@ public class GUI {
         }
         */
         return new ImageIcon(icon.getImage().getScaledInstance(w, h, Image.SCALE_DEFAULT));
+    }
+    
+    // from https://stackoverflow.com/questions/11105915/java-get-an-image-of-a-jpanel
+    public BufferedImage getScreenshot() {    
+        int w = contentPane.getWidth();
+        int h = contentPane.getHeight();
+        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = bi.createGraphics();
+        contentPane.paint(g);
+        return bi;
+    }
+    
+    public void imageToFile(BufferedImage bi)
+    {
+        try{
+            File outputfile = new File("test.png");
+            ImageIO.write(bi, "png", outputfile);
+        } catch (IOException e) 
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
     }
 }

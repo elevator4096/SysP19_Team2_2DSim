@@ -117,7 +117,7 @@ public class RobotB
 
         } 
         // Radgeschwindigkeiten sind praktisch genau entgegengesetzt? - reine Rotation
-        else if ( (Math.abs(sL+sR)<0.000001) && false)
+        else if ( (Math.abs(sL+sR)<0.000001))
         {
             double d = Constants.wheelbase;
             pose.setPose(pose.x,pose.y, pose.addPhi((sL-sR)/(Math.PI*d ) ));

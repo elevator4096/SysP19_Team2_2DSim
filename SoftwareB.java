@@ -50,11 +50,8 @@ public class SoftwareB
     }    
     
     public void testDrive()
-    {
-        
-        
-        
-        robot.rightDrivingMotor.setSpeed(0);
+    {      
+        robot.rightDrivingMotor.setSpeed(-100);
         robot.leftDrivingMotor.setSpeed(100);
     }
     
