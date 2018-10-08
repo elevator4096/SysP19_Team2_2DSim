@@ -2,8 +2,6 @@
 
 public class DrivingMotor
 {  
-    //speed in mm/us
-    private final double maxSpeed = (500/1000000)/128;
     
     private double speed = 0; 
 
@@ -12,12 +10,9 @@ public class DrivingMotor
         
     }
     
-    public void setSpeed(int pwmValue)
+    public void setSpeed(double speed)
     {
-        if(pwmValue>=0 && pwmValue<=255)
-        {
-            speed = (pwmValue-128)*maxSpeed;
-        }
+        this.speed = speed;
     }   
     
     public double getSpeed()

@@ -10,8 +10,11 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 712bf0871a16936e8fd70dc0b249a5f374ef9637
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear

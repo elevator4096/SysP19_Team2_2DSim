@@ -1,15 +1,16 @@
 public class Opponent
 {
+    Pose pose;
 
-    public Opponent()
+    public Opponent(Pose pose)
     {
-        
+        this.pose = new Pose(pose);
     }
     
-    public int getPos()
+    public Pose getPose()
     {
         
-        return 0;
+        return pose;
     }
 
     
