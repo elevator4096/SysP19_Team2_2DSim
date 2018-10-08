@@ -71,9 +71,9 @@ public class Simulation
         robotB  = new RobotB("robotB_Red",new Pose(130,120,0));
         robotS = new RobotS("robotS_Blue",new Pose(630,120,0));
         
-        //Software von Roboter initialisieren
-        softwareB.init(robotB);
-        //softwareS.init(robotS);
+        //Clock an Roboter uebergeben
+        robotB.setClock(clock);
+        //robotS.setClock(clock);
         
         //Grafische Oberflaeche erzeugen
         gui = new GUI(showGui);
@@ -84,6 +84,15 @@ public class Simulation
         
         //Spielfeld mit Gegnern erzeugen und darstellen
         field = new Field(gui,opponentPositions);
+        
+        //Software von Roboter initialisieren
+        softwareB.init(robotB);
+        //softwareS.init(robotS);
+        
+        //roboter Spielfeld uebergeben
+        softwareB.robot.setField(field);
+        //softwareS.robot.setField(field);
+        
              
         //startsignal an Roboter senden
         softwareB.start();

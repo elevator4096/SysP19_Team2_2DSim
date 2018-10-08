@@ -7,7 +7,7 @@
 public class SoftwareB
 {
     
-    RobotB robot;
+    public RobotB robot;
     
     int state = 0;
     
@@ -23,9 +23,7 @@ public class SoftwareB
     public void init(RobotB robotB)
     {
         robot = robotB;
-        
-        //Only for REAL robot
-        //while(true) mainLoop();     
+           
     }
     
     //wird ausgefuehrt sobald das Startsignal empfangen wurde
@@ -34,19 +32,17 @@ public class SoftwareB
         gameStarted = true;
         
         //NUR ZUM TESTEN( Zielposition des Roboters weit ausserhalb setzen)
-        robot.drive(2000,100)       ;
+        //robot.drive(2000,100)       ;
     }
     
     //Wird in der Hauptschleife ausgefuehrt(hier von Simulationsumgebung - Real in Endlosschleife)
     public void mainLoop()
-    {
-        
-        //herumfahren wenn Spiel bereits gestartet ist
-        //if (gameStarted) driveAround();
-        
-        if (gameStarted) testDrive();
-
-
+    { 
+        if (gameStarted)
+        {
+            driveAround();
+            //testDrive();
+        }    
     }    
     
     public void testDrive()

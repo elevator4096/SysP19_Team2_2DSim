@@ -12,6 +12,10 @@ public class RobotB
     public String name;
     public Pose pose = new Pose(0,0,0);
     private Pose targetPose = new Pose(0,0,0);
+    private Clock clock;
+    
+    //Spielfeld
+    Field field;
     
     // Sensoren
     public SharpSensor  sharpSensor1; 
@@ -51,6 +55,17 @@ public class RobotB
         
     }
     
+    // uebergibt dem Roboter ein Spielfeld( wird von Sensoren benoetigt)
+    public void setField(Field field)
+    {
+        this.field = field;
+    }    
+    
+    public void setClock(Clock clock)
+    {
+        this.clock = clock; 
+    }    
+    
     //Fahre distanz in mm mit geschwindigkeit in mm/s
     public boolean drive(int distance, int speed)
     {
@@ -67,8 +82,8 @@ public class RobotB
         targetPose.phi = pose.addPhi(angle);
         
         double motorSpeed = Math.signum(angle)*angularSpeed*Constants.wheelbase*Math.PI/2;
-        leftDrivingMotor.setSpeed(-motorSpeed);
-        rightDrivingMotor.setSpeed(motorSpeed);
+        leftDrivingMotor.setSpeed(motorSpeed);
+        rightDrivingMotor.setSpeed(-motorSpeed);
         
         return true;
     }
