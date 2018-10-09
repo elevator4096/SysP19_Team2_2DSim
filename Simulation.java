@@ -68,12 +68,12 @@ public class Simulation
          */
 
         //Roboter mit Name und Pose(Position und Richtung) erzeugen
-        robotB  = new RobotB("robotB_Red",new Pose(50,120,0));
-        robotS = new RobotS("robotS_Blue",new Pose(550,120,0));
+        robotB  = new RobotB("robotB_Red",new Pose(130,120,0));
+        robotS = new RobotS("robotS_Blue",new Pose(630,120,0));
         
-        //Software von Roboter initialisieren
-        softwareB.init(robotB);
-        //softwareS.init(robotS);
+        //Clock an Roboter uebergeben
+        robotB.setClock(clock);
+        //robotS.setClock(clock);
         
         //Grafische Oberflaeche erzeugen
         gui = new GUI(showGui);
@@ -84,6 +84,15 @@ public class Simulation
         
         //Spielfeld mit Gegnern erzeugen und darstellen
         field = new Field(gui,opponentPositions);
+        
+        //Software von Roboter initialisieren
+        softwareB.init(robotB);
+        //softwareS.init(robotS);
+        
+        //roboter Spielfeld uebergeben
+        softwareB.robot.setField(field);
+        //softwareS.robot.setField(field);
+        
              
         //startsignal an Roboter senden
         softwareB.start();
@@ -92,7 +101,7 @@ public class Simulation
         //Hauptschleife der Simulation wird ausgefuehrt bis Zeit abgelaufen
         // 60 s Simulationszeit
         counter = 0;
-        while(clock.tick()<6000000) mainLoop(showGui);
+        while(clock.tick()<60000000) mainLoop(showGui);
     }   
     
     private void mainLoop(boolean waiting)

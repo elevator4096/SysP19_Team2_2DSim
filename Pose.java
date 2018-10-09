@@ -54,4 +54,12 @@ public class Pose
         
         return true;
     }
+    
+    // Korrektes addieren von Winkeln
+    public double addPhi(double angle)
+    {
+        angle = (this.phi + angle + 2*Math.PI)%(2*Math.PI); 
+        
+        return angle;
+    }
 }

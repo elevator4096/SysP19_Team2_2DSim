@@ -15,6 +15,7 @@ public class SharpSensor
     public void startMeasuring(int time)
     {
         startTime = time;
+        //distance =
     }    
     
     public int getMaxDistance()

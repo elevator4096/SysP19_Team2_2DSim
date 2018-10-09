@@ -7,7 +7,7 @@
 public class SoftwareB
 {
     
-    RobotB robot;
+    public RobotB robot;
     
     int state = 0;
     
@@ -23,26 +23,33 @@ public class SoftwareB
     public void init(RobotB robotB)
     {
         robot = robotB;
-        
-        //Only for REAL robot
-        //while(true) mainLoop();     
+           
     }
     
     //wird ausgefuehrt sobald das Startsignal empfangen wurde
     public void start()
     {
         gameStarted = true;
+        
+        //NUR ZUM TESTEN( Zielposition des Roboters weit ausserhalb setzen)
+        //robot.drive(2000,100)       ;
     }
     
     //Wird in der Hauptschleife ausgefuehrt(hier von Simulationsumgebung - Real in Endlosschleife)
     public void mainLoop()
-    {
-        
-        //herumfahren wenn Spiel bereits gestartet ist
-        if (gameStarted) driveAround();
-
-
+    { 
+        if (gameStarted)
+        {
+            driveAround();
+            //testDrive();
+        }    
     }    
+    
+    public void testDrive()
+    {      
+        robot.rightDrivingMotor.setSpeed(-100);
+        robot.leftDrivingMotor.setSpeed(100);
+    }
     
     //herumfahren um Fahrfunktionen zu testen
     public void driveAround()
@@ -53,12 +60,13 @@ public class SoftwareB
             state += 1;
             switch (state) 
             {
-                // Drehe dich um PI/4 rad 
+                // Drehe dich um PI/4 rad (+ nach rechts drehen, - nach links drehen)
                 case 1 : robot.turn(Math.PI/4, Math.PI/2) ; break;
                 case 2 : robot.drive(400,200)       ; break;
                 
                 case 3 : robot.turn(Math.PI/2, Math.PI/4) ; break;
                 case 4 : robot.drive(220,150)       ; break;
+
                 default: state = 3-1;
             }    
         }

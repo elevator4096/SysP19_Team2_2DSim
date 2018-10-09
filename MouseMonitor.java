@@ -20,9 +20,11 @@ import javax.swing.SwingUtilities;
 public class MouseMonitor {
     
     private JLabelRot background;
+    private int pixelPmm;
     private Point location = new Point(0,0);
 
-    public MouseMonitor(JLabelRot background) {
+    public MouseMonitor(JLabelRot background,int pixelPmm) {
+        this.pixelPmm = pixelPmm;
         MouseTracker tracker = new MouseTracker();
         
         this.background = background;
@@ -36,7 +38,8 @@ public class MouseMonitor {
         public void mousePressed(MouseEvent e) {
             clickedComponent = e.getComponent();
             location = SwingUtilities.convertPoint(clickedComponent, e.getPoint(), clickedComponent.getParent());
-            location = new Point((int)location.getX(),Constants.fieldSizeMMY-(int)location.getY());
+            // TODO : /pixelPMM damit Koord stimmen
+            location = new Point((int)location.getX()/pixelPmm,Constants.fieldSizeMMY-(int)location.getY()/pixelPmm);
             System.out.println(location);
         }
         

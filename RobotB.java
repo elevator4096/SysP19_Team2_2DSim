@@ -12,6 +12,10 @@ public class RobotB
     public String name;
     public Pose pose = new Pose(0,0,0);
     private Pose targetPose = new Pose(0,0,0);
+    private Clock clock;
+    
+    //Spielfeld
+    Field field;
     
     // Sensoren
     public SharpSensor  sharpSensor1; 
@@ -51,6 +55,17 @@ public class RobotB
         
     }
     
+    // uebergibt dem Roboter ein Spielfeld( wird von Sensoren benoetigt)
+    public void setField(Field field)
+    {
+        this.field = field;
+    }    
+    
+    public void setClock(Clock clock)
+    {
+        this.clock = clock; 
+    }    
+    
     //Fahre distanz in mm mit geschwindigkeit in mm/s
     public boolean drive(int distance, int speed)
     {
@@ -61,14 +76,14 @@ public class RobotB
         return true;
     }   
     
-    //drehe um Mittelpunkt des Roboters um Winkel in rad und Winkelgeschwindigkeit in rad/s
+    //drehe um Mittelpunkt des Roboters um Winkel in rad und Winkelgeschwindigkeit in rad/s (+ rechts drehen, - links drehen) 
     public boolean turn(double angle, double angularSpeed)
     {
-        targetPose.phi = pose.phi + angle;
+        targetPose.phi = pose.addPhi(angle);
         
-        double motorSpeed = angularSpeed*Constants.wheelbase*Math.PI/2;
-        leftDrivingMotor.setSpeed(-motorSpeed);
-        rightDrivingMotor.setSpeed(motorSpeed);
+        double motorSpeed = Math.signum(angle)*angularSpeed*Constants.wheelbase*Math.PI/2;
+        leftDrivingMotor.setSpeed(motorSpeed);
+        rightDrivingMotor.setSpeed(-motorSpeed);
         
         return true;
     }
@@ -107,7 +122,7 @@ public class RobotB
         
         
         // Radgeschwindigkeiten sind praktisch gleich? - reine Translation
-        if (Math.abs(sL-sR)<0.000001)
+        if (Math.abs(sL-sR)<0.00000001)
         {
             double phi = pose.phi;
             double r = sR;
@@ -117,37 +132,45 @@ public class RobotB
 
         } 
         // Radgeschwindigkeiten sind praktisch genau entgegengesetzt? - reine Rotation
-        else if (Math.abs(sL+sR)<0.000001)
+        else if ( (Math.abs(sL+sR)<0.000001))
         {
             double d = Constants.wheelbase;
-            pose.setPose(pose.x,pose.y, pose.phi + (sR-sL)/(Math.PI*d ) );
+            pose.setPose(pose.x,pose.y, pose.addPhi((sL-sR)/(Math.PI*d ) ));
         }
         //Radgeschwindigkeiten sind unterschiedlich -> Fahre teil eines Kreisabschnittes -> Funktioniert noch nicht richtig
         else
         {
 
-            /* FUNKTIONIERT NOCH NICHT!!!
+            /*
              * 
-             //TODO sL = 0 abfragen div by zero!!!
         
              // Kurvenradius nur berechnen wenn sL != sR -> sonst division durch 0
              * 
-             * 
+             */
+            
+            // Division durch 0 vermeiden
+            if (Math.abs(sR)<0.000000001)
+            {
+                sR = 0.000000001;
+            }
             double d = Constants.wheelbase;
             
-            double a        = d/(sR/sL -1);
-            double alpha    = sL/a;
+            double a        = (d/(sL/sR-1));
+            double alpha    = (sR/a)/(Math.PI/2);
             
-            double beta     = Math.PI/2 - alpha/2;
-            double r = 2*(d+a)*Math.sin(alpha/2);
+            double r = (d+2*a)*Math.sin(alpha/2)/2;
             
-            double phi = pose.phi + Math.PI/2 - beta;
+            double phi = pose.addPhi(alpha/2);
             
             double dX = r*Math.sin(phi);
             double dY = r*Math.cos(phi);
             
+            //debug
+            double alpaDeg = alpha*180/Math.PI;
+            double phiDeg = phi*180/Math.PI;
+            
             pose.setPose(pose.x+dX,pose.y+dY, phi);
-            */
+            
         }    
         
         
