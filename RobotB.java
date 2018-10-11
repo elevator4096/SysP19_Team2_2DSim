@@ -8,17 +8,17 @@
 public class RobotB
 {
     
+    public Simulation simulation;
+    
     //allgemeine Variablen
     public String name;
     public Pose pose = new Pose(0,0,0);
     private Pose targetPose = new Pose(0,0,0);
-    private Clock clock;
-    
-    //Spielfeld
-    Field field;
     
     // Sensoren
-    public SharpSensor  sharpSensor1; 
+    public SharpSensor  frontSharpSensor; 
+    public SharpSensor  leftSharpSensor; 
+    public SharpSensor  rightSharpSensor; 
     public UsSensor     usSensor1; 
     public LineSensor   frontMiddleLinesensor;
     
@@ -28,15 +28,20 @@ public class RobotB
     public BallThrower  ballThrower1;
 
     //Konstruktor um Namen und Pose(Position und Richtung) des Roboters festzulegen
-    public RobotB(String robotName, Pose pose)
+    public RobotB(Simulation simulation,String robotName, Pose pose)
     {
+        this.simulation = simulation;
+        
         this.pose.setPose(pose);
         
         name = robotName;
         
         //Erzeuge Sensoren
         frontMiddleLinesensor   = new LineSensor();
-        sharpSensor1            = new SharpSensor();
+        //Sensoren KORREKT anordnen
+        frontSharpSensor        = new SharpSensor(this,new Pose(pose));
+        leftSharpSensor         = new SharpSensor(this,new Pose(pose));
+        rightSharpSensor        = new SharpSensor(this,new Pose(pose));
         usSensor1               = new UsSensor();
         
         //Erzeuge Aktoren
@@ -51,20 +56,10 @@ public class RobotB
     //Updatefunktion wird von Simulation periodisch aufgerufen um Roboter seinen Zustand aendern zu lassen
     public void update()
     {
-        update_status();
+        updateStatus();
+        updateDevices();
         
     }
-    
-    // uebergibt dem Roboter ein Spielfeld( wird von Sensoren benoetigt)
-    public void setField(Field field)
-    {
-        this.field = field;
-    }    
-    
-    public void setClock(Clock clock)
-    {
-        this.clock = clock; 
-    }    
     
     //Fahre distanz in mm mit geschwindigkeit in mm/s
     public boolean drive(int distance, int speed)
@@ -87,6 +82,28 @@ public class RobotB
         
         return true;
     }
+   
+    public int getLastSharpSensorDistance(int sensorNr)
+    {
+        
+        switch (sensorNr) 
+        {
+            // Drehe dich um PI/4 rad (+ nach rechts drehen, - nach links drehen)
+            case 1 : return rightSharpSensor.getDistance() ;
+
+            default: return 0;
+        }    
+    }
+    
+    public long getTime()
+    {
+        return simulation.clock.getTime();
+    }
+    
+    public long getField()
+    {
+        return simulation.clock.getTime();
+    }
     
     //Gibt nur wahr zurueck wenn sich keines der Raeder bewegt
     public boolean isMoving()
@@ -95,7 +112,7 @@ public class RobotB
     }    
     
     //Status von diversen Sensoren und Aktoren aktualisieren(Motor ausschalten wenn Zielposition erreicht, etc.)
-    private void update_status()
+    private void updateStatus()
     {   
         if ( isMoving() && pose.closeEnough(targetPose) ) 
         {
@@ -107,6 +124,18 @@ public class RobotB
         {
             Move();
         }
+        
+    }
+    
+    private void updateDevices()
+    {
+        frontSharpSensor.pose        = new Pose(pose.x+50*Math.sin(pose.phi),pose.y+50*Math.cos(pose.phi),pose.phi+0);
+        leftSharpSensor.pose         = new Pose(pose.x-50*Math.cos(pose.phi),pose.y+50*Math.sin(pose.phi),pose.phi-Math.PI/2);
+        rightSharpSensor.pose        = new Pose(pose.x+50*Math.cos(pose.phi),pose.y-50*Math.sin(pose.phi),pose.phi+Math.PI/2);
+        
+        frontSharpSensor.update();
+        leftSharpSensor.update();
+        rightSharpSensor.update();
     }
     
     // Berechne Bewegung in einem Simulationsschritt anhand der Radgeschwindigkeiten

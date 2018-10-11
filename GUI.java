@@ -116,6 +116,11 @@ public class GUI {
     {
         return createImage("images/robotBlue.png",(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y),true);
     }
+    //Bild von sharpSensor laden und darstellen
+    public JLabelRot drawSharpSensor(SharpSensor sharpsensor)
+    {
+        return createImage("images/sharpSensor.png",(int)Math.round(sharpsensor.pose.x),(int)Math.round(sharpsensor.pose.y),true);
+    }
     
     // Funktion um Bilder zu laden und darzustellen (pfad,minBreite,minHoehe, xPosition, yPosition, Bild zentriert plazieren)
     private JLabelRot createImage(String imagePath,int xPos, int yPos, boolean centered)
