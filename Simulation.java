@@ -34,7 +34,7 @@ public class Simulation
     //Schleifen Zaehlvariable
     private int counter = 0;
     
-    Clock clock = new Clock();
+    public Clock clock = new Clock();
     
     public static void main(String[] args)
     {
@@ -68,12 +68,8 @@ public class Simulation
          */
 
         //Roboter mit Name und Pose(Position und Richtung) erzeugen
-        robotB  = new RobotB("robotB_Red",new Pose(130,120,0));
-        robotS = new RobotS("robotS_Blue",new Pose(630,120,0));
-        
-        //Clock an Roboter uebergeben
-        robotB.setClock(clock);
-        //robotS.setClock(clock);
+        robotB  = new RobotB(this,"robotB_Red",new Pose(130,120,0));
+        robotS = new RobotS(this,"robotS_Blue",new Pose(630,120,0));
         
         //Grafische Oberflaeche erzeugen
         gui = new GUI(showGui);
@@ -87,12 +83,7 @@ public class Simulation
         
         //Software von Roboter initialisieren
         softwareB.init(robotB);
-        //softwareS.init(robotS);
-        
-        //roboter Spielfeld uebergeben
-        softwareB.robot.setField(field);
-        //softwareS.robot.setField(field);
-        
+        //softwareS.init(robotS);       
              
         //startsignal an Roboter senden
         softwareB.start();

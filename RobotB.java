@@ -8,17 +8,16 @@
 public class RobotB
 {
     
+    public Simulation simulation;
+    
     //allgemeine Variablen
     public String name;
     public Pose pose = new Pose(0,0,0);
     private Pose targetPose = new Pose(0,0,0);
-    private Clock clock;
-    
-    //Spielfeld
-    Field field;
     
     // Sensoren
-    public SharpSensor  sharpSensor1; 
+    public SharpSensor  leftSharpSensor; 
+    public SharpSensor  rightSharpSensor; 
     public UsSensor     usSensor1; 
     public LineSensor   frontMiddleLinesensor;
     
@@ -28,15 +27,18 @@ public class RobotB
     public BallThrower  ballThrower1;
 
     //Konstruktor um Namen und Pose(Position und Richtung) des Roboters festzulegen
-    public RobotB(String robotName, Pose pose)
+    public RobotB(Simulation simulation,String robotName, Pose pose)
     {
+        this.simulation = simulation;
+        
         this.pose.setPose(pose);
         
         name = robotName;
         
         //Erzeuge Sensoren
         frontMiddleLinesensor   = new LineSensor();
-        sharpSensor1            = new SharpSensor();
+        leftSharpSensor         = new SharpSensor(this);
+        rightSharpSensor        = new SharpSensor(this);
         usSensor1               = new UsSensor();
         
         //Erzeuge Aktoren
@@ -54,17 +56,6 @@ public class RobotB
         update_status();
         
     }
-    
-    // uebergibt dem Roboter ein Spielfeld( wird von Sensoren benoetigt)
-    public void setField(Field field)
-    {
-        this.field = field;
-    }    
-    
-    public void setClock(Clock clock)
-    {
-        this.clock = clock; 
-    }    
     
     //Fahre distanz in mm mit geschwindigkeit in mm/s
     public boolean drive(int distance, int speed)
@@ -86,6 +77,28 @@ public class RobotB
         rightDrivingMotor.setSpeed(-motorSpeed);
         
         return true;
+    }
+   
+    public int getLastSharpSensorDistance(int sensorNr)
+    {
+        
+        switch (sensorNr) 
+        {
+            // Drehe dich um PI/4 rad (+ nach rechts drehen, - nach links drehen)
+            case 1 : return rightSharpSensor.getDistance() ;
+
+            default: return 0;
+        }    
+    }
+    
+    public long getTime()
+    {
+        return simulation.clock.getTime();
+    }
+    
+    public long getField()
+    {
+        return simulation.clock.getTime();
     }
     
     //Gibt nur wahr zurueck wenn sich keines der Raeder bewegt

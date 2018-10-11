@@ -2,21 +2,19 @@ public class SharpSensor
 {
     public final int maxDistance =     300; //mm
     public final int minDistance =      40; //mm
-    public final int waitingTime =   42000; //us TO BE CHANGED 
+    public final int waitingTime =   25200; //us WORST CASE( datasheet https://www.pololu.com/file/0J713/GP2Y0A41SK0F.pdf)
     
-    private int distance;
-    private int startTime;
+    private int pendingDistance;
+    private int LastDistance;
+    private long startTime;
+    
+    private RobotB robot;
+    
 
-    public SharpSensor()
+    public SharpSensor(RobotB robot)
     {
-        
-    }
-    
-    public void startMeasuring(int time)
-    {
-        startTime = time;
-        //distance =
-    }    
+        this.robot = robot;
+    } 
     
     public int getMaxDistance()
     {
@@ -28,9 +26,9 @@ public class SharpSensor
         return minDistance;
     }    
     
-    public int getDistance(int time)
+    public int getDistance()
     {
-        if (time > startTime+waitingTime)
+        if (robot.getTime() > startTime+waitingTime)
         { 
             return distance;
         }
@@ -39,6 +37,19 @@ public class SharpSensor
             return 0;
         }
             
+    }  
+    
+    public void update()
+    {
+        if (robot.getTime() >= startTime+waitingTime)
+        { 
+            LastDistance = pendingDistance;
+            pendingDistance = measureDistance();
+        }
+    }
+    
+    private int measureDistance()
+    {
+        robot.getField()
     }    
-
 }
