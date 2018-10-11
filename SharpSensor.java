@@ -5,15 +5,17 @@ public class SharpSensor
     public final int waitingTime =   25200; //us WORST CASE( datasheet https://www.pololu.com/file/0J713/GP2Y0A41SK0F.pdf)
     
     private int pendingDistance;
-    private int LastDistance;
+    private int lastDistance;
     private long startTime;
     
     private RobotB robot;
+    public Pose pose;
     
 
-    public SharpSensor(RobotB robot)
+    public SharpSensor(RobotB robot, Pose pose)
     {
         this.robot = robot;
+        this.pose = pose;
     } 
     
     public int getMaxDistance()
@@ -30,7 +32,7 @@ public class SharpSensor
     {
         if (robot.getTime() > startTime+waitingTime)
         { 
-            return distance;
+            return lastDistance;
         }
         else 
         {
@@ -43,13 +45,16 @@ public class SharpSensor
     {
         if (robot.getTime() >= startTime+waitingTime)
         { 
-            LastDistance = pendingDistance;
+            lastDistance = pendingDistance;
             pendingDistance = measureDistance();
         }
     }
     
     private int measureDistance()
     {
-        robot.getField()
+        //field = robot.getField();
+        
+        
+        return 0;
     }    
 }

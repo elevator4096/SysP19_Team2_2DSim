@@ -6,10 +6,13 @@ import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.awt.Point;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+
+
 
 
 public class Field
@@ -53,8 +56,15 @@ public class Field
       return green;
     }
     
+    /*
+    public Point getClosestDistanceToOpponents(Pose sensorPose)
+    {
+        
+    } 
+    */
+    
     // from http://www.java2s.com/Code/Java/2D-Graphics-GUI/BlurringaBufferedImage.htm
-    public BufferedImage Blur(BufferedImage image)
+    private BufferedImage Blur(BufferedImage image)
     {
         Kernel kernel = new Kernel(5, 5, new float[] { 
             0.003765f, 0.015019f, 0.023792f, 0.015019f, 0.003765f,

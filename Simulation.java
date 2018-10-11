@@ -28,6 +28,11 @@ public class Simulation
     private JLabelRot redRobotB;
     private JLabelRot blueRobotS;
     
+    //drehbare Bilder von SharpSensoren
+    public JLabelRot  frontSharpSensorLabel; 
+    public JLabelRot  leftSharpSensorLabel; 
+    public JLabelRot  rightSharpSensorLabel; 
+    
     //Hintergrundbild
     private JLabelRot background;
     
@@ -74,10 +79,18 @@ public class Simulation
         //Grafische Oberflaeche erzeugen
         gui = new GUI(showGui);
         
+        //drehbare Bilder von SharpSensoren laden und darstellen
+        frontSharpSensorLabel = gui.drawSharpSensor(robotB.frontSharpSensor); 
+        leftSharpSensorLabel  = gui.drawSharpSensor(robotB.leftSharpSensor);  
+        rightSharpSensorLabel = gui.drawSharpSensor(robotB.rightSharpSensor);  
+        
         //Drehbare Bilder von Robotern laden und darstellen
         redRobotB  = gui.drawRobotB(robotB);
         blueRobotS = gui.drawRobotS(robotS);
         
+        
+
+       
         //Spielfeld mit Gegnern erzeugen und darstellen
         field = new Field(gui,opponentPositions);
         
@@ -124,6 +137,10 @@ public class Simulation
         
         //neue Pose(Position und Richtung) des Roboters darstellen
         gui.repose(redRobotB,robotB.pose);
+        //neue Pose(Position und Richtung) der Sharpsensoren darstellen
+        gui.repose(frontSharpSensorLabel,robotB.frontSharpSensor.pose);
+        gui.repose( leftSharpSensorLabel,robotB.leftSharpSensor.pose);
+        gui.repose(rightSharpSensorLabel,robotB.rightSharpSensor.pose);
     }    
     
     

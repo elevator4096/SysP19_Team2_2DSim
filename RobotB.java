@@ -16,6 +16,7 @@ public class RobotB
     private Pose targetPose = new Pose(0,0,0);
     
     // Sensoren
+    public SharpSensor  frontSharpSensor; 
     public SharpSensor  leftSharpSensor; 
     public SharpSensor  rightSharpSensor; 
     public UsSensor     usSensor1; 
@@ -37,8 +38,10 @@ public class RobotB
         
         //Erzeuge Sensoren
         frontMiddleLinesensor   = new LineSensor();
-        leftSharpSensor         = new SharpSensor(this);
-        rightSharpSensor        = new SharpSensor(this);
+        //Sensoren KORREKT anordnen
+        frontSharpSensor        = new SharpSensor(this,new Pose(pose));
+        leftSharpSensor         = new SharpSensor(this,new Pose(pose));
+        rightSharpSensor        = new SharpSensor(this,new Pose(pose));
         usSensor1               = new UsSensor();
         
         //Erzeuge Aktoren
@@ -53,7 +56,8 @@ public class RobotB
     //Updatefunktion wird von Simulation periodisch aufgerufen um Roboter seinen Zustand aendern zu lassen
     public void update()
     {
-        update_status();
+        updateStatus();
+        updateDevices();
         
     }
     
@@ -108,7 +112,7 @@ public class RobotB
     }    
     
     //Status von diversen Sensoren und Aktoren aktualisieren(Motor ausschalten wenn Zielposition erreicht, etc.)
-    private void update_status()
+    private void updateStatus()
     {   
         if ( isMoving() && pose.closeEnough(targetPose) ) 
         {
@@ -120,6 +124,18 @@ public class RobotB
         {
             Move();
         }
+        
+    }
+    
+    private void updateDevices()
+    {
+        frontSharpSensor.pose        = new Pose(pose.x+50*Math.sin(pose.phi),pose.y+50*Math.cos(pose.phi),pose.phi+0);
+        leftSharpSensor.pose         = new Pose(pose.x-50*Math.cos(pose.phi),pose.y+50*Math.sin(pose.phi),pose.phi-Math.PI/2);
+        rightSharpSensor.pose        = new Pose(pose.x+50*Math.cos(pose.phi),pose.y-50*Math.sin(pose.phi),pose.phi+Math.PI/2);
+        
+        frontSharpSensor.update();
+        leftSharpSensor.update();
+        rightSharpSensor.update();
     }
     
     // Berechne Bewegung in einem Simulationsschritt anhand der Radgeschwindigkeiten
