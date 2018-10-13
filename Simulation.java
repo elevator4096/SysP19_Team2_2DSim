@@ -29,7 +29,9 @@ public class Simulation
     private JLabelRot blueRobotS;
     
     //Blauen punkt laden und offscreen darstellen
-    JLabelRot bluePoint; 
+    JLabelRot frontSharpSensorPoint; 
+    JLabelRot leftSharpSensorPoint; 
+    JLabelRot rightSharpSensorPoint; 
     
     //drehbare Bilder von SharpSensoren
     public JLabelRot  frontSharpSensorLabel; 
@@ -83,6 +85,11 @@ public class Simulation
         //Grafische Oberflaeche erzeugen
         gui = new GUI(showGui);
         
+        //SharpMessPunkte laden
+        frontSharpSensorPoint = gui.drawBluePoint(new Pose(0,0,0));
+        leftSharpSensorPoint  = gui.drawBluePoint(new Pose(0,0,0));
+        rightSharpSensorPoint = gui.drawBluePoint(new Pose(0,0,0));
+        
         //drehbare Bilder von SharpSensoren laden und darstellen
         frontSharpSensorLabel = gui.drawSharpSensor(robotB.frontSharpSensor); 
         leftSharpSensorLabel  = gui.drawSharpSensor(robotB.leftSharpSensor);  
@@ -92,8 +99,7 @@ public class Simulation
         redRobotB  = gui.drawRobotB(robotB);
         blueRobotS = gui.drawRobotS(robotS);
         
-        //blauen punkt laden und darstellen
-        bluePoint = gui.drawBluePoint(new Pose(133,210,0));
+
         
         
 
@@ -146,10 +152,14 @@ public class Simulation
         gui.repose(redRobotB,robotB.pose);
         //neue Pose(Position und Richtung) der Sharpsensoren darstellen
         gui.repose(frontSharpSensorLabel,robotB.frontSharpSensor.pose);
-        gui.repose( leftSharpSensorLabel,robotB.leftSharpSensor.pose);
+        gui.repose(leftSharpSensorLabel,robotB.leftSharpSensor.pose);
         gui.repose(rightSharpSensorLabel,robotB.rightSharpSensor.pose);
         
-        gui.repose(bluePoint,field.closestPoint);
+        gui.repose(frontSharpSensorPoint,robotB.frontSharpSensor.getClosestPoint());
+        gui.repose(leftSharpSensorPoint ,robotB.leftSharpSensor .getClosestPoint());
+        gui.repose(rightSharpSensorPoint,robotB.rightSharpSensor.getClosestPoint());
+        
+        
         
     }    
     
