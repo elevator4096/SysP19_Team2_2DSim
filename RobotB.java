@@ -100,9 +100,9 @@ public class RobotB
         return simulation.clock.getTime();
     }
     
-    public long getField()
+    public Field getField()
     {
-        return simulation.clock.getTime();
+        return simulation.getField();
     }
     
     //Gibt nur wahr zurueck wenn sich keines der Raeder bewegt

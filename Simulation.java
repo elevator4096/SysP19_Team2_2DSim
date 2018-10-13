@@ -28,10 +28,14 @@ public class Simulation
     private JLabelRot redRobotB;
     private JLabelRot blueRobotS;
     
+    //Blauen punkt laden und offscreen darstellen
+    JLabelRot bluePoint; 
+    
     //drehbare Bilder von SharpSensoren
     public JLabelRot  frontSharpSensorLabel; 
     public JLabelRot  leftSharpSensorLabel; 
     public JLabelRot  rightSharpSensorLabel; 
+    
     
     //Hintergrundbild
     private JLabelRot background;
@@ -88,6 +92,9 @@ public class Simulation
         redRobotB  = gui.drawRobotB(robotB);
         blueRobotS = gui.drawRobotS(robotS);
         
+        //blauen punkt laden und darstellen
+        bluePoint = gui.drawBluePoint(new Pose(133,210,0));
+        
         
 
        
@@ -141,6 +148,9 @@ public class Simulation
         gui.repose(frontSharpSensorLabel,robotB.frontSharpSensor.pose);
         gui.repose( leftSharpSensorLabel,robotB.leftSharpSensor.pose);
         gui.repose(rightSharpSensorLabel,robotB.rightSharpSensor.pose);
+        
+        gui.repose(bluePoint,field.closestPoint);
+        
     }    
     
     
@@ -155,8 +165,12 @@ public class Simulation
         {
             Thread.currentThread().interrupt();
         }
-    }    
+    } 
     
+    public Field getField()
+    {
+        return field;
+    }
 }
 
 

@@ -122,6 +122,11 @@ public class GUI {
         return createImage("images/sharpSensor.png",(int)Math.round(sharpsensor.pose.x),(int)Math.round(sharpsensor.pose.y),true);
     }
     
+    public JLabelRot drawBluePoint(Pose pose)
+    {
+        return createImage("images/bluePoint.png",(int)Math.round(pose.x),(int)Math.round(pose.y),true);
+    }
+    
     // Funktion um Bilder zu laden und darzustellen (pfad,minBreite,minHoehe, xPosition, yPosition, Bild zentriert plazieren)
     private JLabelRot createImage(String imagePath,int xPos, int yPos, boolean centered)
     {

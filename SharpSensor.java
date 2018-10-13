@@ -52,7 +52,7 @@ public class SharpSensor
     
     private int measureDistance()
     {
-        //field = robot.getField();
+        robot.getField().getClosestDistanceToOpponents(pose, 16);
         
         
         return 0;
