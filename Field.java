@@ -17,12 +17,16 @@ import java.io.IOException;
 
 public class Field
 {
+    private Pose closestPoint = new Pose(0,0,0);
+    
     private BufferedImage background;
     private List<Opponent> opponents = new ArrayList<Opponent>();
+    private GUI gui;
     
     //Konstruktor: Hintergrund abspeichern und Gegner erzeugen
     public Field(GUI gui,List<Pose> opponentPositions)
     {
+        this.gui = gui;
         
         // fuer jede in opponentPositions gespeicherte Position einen Gegner erzeugen 
         for(Pose pose : opponentPositions)
@@ -42,6 +46,7 @@ public class Field
         //Hintergrund Weichzeichnen um Helligkeitssensoren besser simulieren zu koennen
         background = Blur(background);
         
+        
     }
     
     //Liefert den Helligkeitswert des Gruenanteils eines Pixels
@@ -56,12 +61,56 @@ public class Field
       return green;
     }
     
-    /*
-    public Point getClosestDistanceToOpponents(Pose sensorPose)
+    
+    public double getClosestDistanceToOpponents(SharpSensor sharpSensor, int beamWidth)
     {
+        Pose sP = sharpSensor.pose;
         
+        double closestDist = Double.MAX_VALUE;
+        closestPoint = new Pose(0,0,0);
+        
+        //berechne mittlere Gerade (y = a*x + b) 
+        double a = 1/Math.tan(sP.phi); // Steigung a = cotangens(phi)
+        double b0 = sP.y-a*sP.x; // mittlerer Y-Achsenabschnitt b0 = Yp-a*Xp
+        
+        // Schneide jede Gerade im halben Abstand der Strahlbreite mit den Gegnern -> speichere die kleinste Distanz und den Schnittpunkt
+        for(double offset = -beamWidth/2; offset < beamWidth/2; offset += 1 ) 
+        {
+            //Y-Achsenobschnitt verschieben
+            double b = b0+offset/Math.sin(sP.phi);
+            
+            for(Opponent opponent : opponents)
+            {
+                List<Point> intersections = opponent.getIntersectionsWithLine(a,b);
+                if (intersections.size()<2) continue; // Passante und Tangente interessieren nicht (Tangente wuerden wir sowieso nicht sicher erkennen)
+                double objectAngle = Math.atan2(intersections.get(0).x-sP.x,intersections.get(0).y-sP.y);
+                objectAngle = (objectAngle+2*Math.PI)%(2*Math.PI);
+                if( Math.abs( objectAngle-sP.phi) > Math.PI/4) continue; // Falls die Schnittpunkte hinter dem Sensor liegen werden sie ignoriert
+                
+                //berechne kleinste Distanz zw Sensorposition und Objektschnittpunkten
+                double dist0 = Math.hypot(intersections.get(0).x-sP.x, intersections.get(0).y-sP.y);
+                double dist1 = Math.hypot(intersections.get(1).x-sP.x, intersections.get(1).y-sP.y);
+                
+                // kleinste Distanz speichern
+                if (Math.min(dist0,dist1) < closestDist)
+                {
+                    if (dist0 < dist1)
+                    {
+                        closestDist = dist0; 
+                        closestPoint =  new Pose(intersections.get(0).x,intersections.get(0).y,0);
+                    }else
+                    {
+                        closestDist = dist1; 
+                        closestPoint =  new Pose(intersections.get(1).x,intersections.get(1).y,0);                  
+                    }
+                }
+                
+            }            
+        }
+        sharpSensor.setClosestPoint(closestPoint);
+        return closestDist;
     } 
-    */
+    
     
     // from http://www.java2s.com/Code/Java/2D-Graphics-GUI/BlurringaBufferedImage.htm
     private BufferedImage Blur(BufferedImage image)

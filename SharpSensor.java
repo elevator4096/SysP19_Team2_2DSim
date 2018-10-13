@@ -10,6 +10,7 @@ public class SharpSensor
     
     private RobotB robot;
     public Pose pose;
+    public Pose closestPoint = new Pose(0,0,0);
     
 
     public SharpSensor(RobotB robot, Pose pose)
@@ -30,16 +31,18 @@ public class SharpSensor
     
     public int getDistance()
     {
-        if (robot.getTime() > startTime+waitingTime)
-        { 
-            return lastDistance;
-        }
-        else 
-        {
-            return 0;
-        }
-            
-    }  
+       return lastDistance;           
+    } 
+    
+    public void setClosestPoint(Pose closestPoint)
+    {
+        this.closestPoint = closestPoint;
+    }
+    
+    public Pose getClosestPoint()
+    {
+        return closestPoint;
+    }
     
     public void update()
     {
@@ -52,7 +55,7 @@ public class SharpSensor
     
     private int measureDistance()
     {
-        //field = robot.getField();
+        robot.getField().getClosestDistanceToOpponents(this,16);
         
         
         return 0;
