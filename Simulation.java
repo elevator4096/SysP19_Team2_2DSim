@@ -39,7 +39,7 @@ public class Simulation
     public JLabelRot  rightSharpSensorLabel; 
     
     //drehbare Bilder von Liniensensor
-    public JLabelRot  frontMiddleLinesensorLabel; 
+    public JLabelRot  frontMiddleLineSensorLabel; 
     
     
     //Hintergrundbild
@@ -89,7 +89,7 @@ public class Simulation
         gui = new GUI(showGui);
         
         //drehbare Bilder von LineSensoren laden und darstellen
-        frontMiddleLinesensorLabel = gui.drawLineSensor(robotB.frontMiddleLinesensor);
+        frontMiddleLineSensorLabel = gui.drawLineSensor(robotB.frontMiddleLineSensor);
         
         //SharpMessPunkte laden
         frontSharpSensorPoint = gui.drawBluePoint(new Pose(0,0,0));
@@ -165,7 +165,7 @@ public class Simulation
         gui.repose(leftSharpSensorPoint ,robotB.leftSharpSensor .getClosestPoint());
         gui.repose(rightSharpSensorPoint,robotB.rightSharpSensor.getClosestPoint());
         
-        gui.repose(frontMiddleLinesensorLabel,robotB.frontMiddleLinesensor.pose);
+        gui.repose(frontMiddleLineSensorLabel,robotB.frontMiddleLineSensor.pose);
         
         
         
