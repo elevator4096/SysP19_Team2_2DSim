@@ -7,6 +7,9 @@ public abstract class Constants
     // Mechanik
     public static final int wheelbase           = 160; // Achsenabstand in mm
     
+    // Sensoren
+    public static final int lineSensorSpacing   = 6;   // Liniensensor Abstand in mm 
+    
     // Simulation
     public static final double simulationSpeed  = 100; // % Realtime
     public static final int timeStep            = 900; // us

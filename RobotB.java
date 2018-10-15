@@ -4,7 +4,7 @@
  * 
  * ermoeglicht High-Level Befehle wie drive(distanz) oder turn(winkel)
 */
-
+import java.awt.Point;
 public class RobotB
 {
     
@@ -20,7 +20,7 @@ public class RobotB
     public SharpSensor  leftSharpSensor; 
     public SharpSensor  rightSharpSensor; 
     public UsSensor     usSensor1; 
-    public LineSensor   frontMiddleLinesensor;
+    public LineSensor   frontMiddleLineSensor;
     
     // Aktoren
     public DrivingMotor leftDrivingMotor;
@@ -37,7 +37,7 @@ public class RobotB
         name = robotName;
         
         //Erzeuge Sensoren
-        frontMiddleLinesensor   = new LineSensor();
+        frontMiddleLineSensor   = new LineSensor(this,new Pose(pose));
         //Sensoren KORREKT anordnen
         frontSharpSensor        = new SharpSensor(this,new Pose(pose));
         leftSharpSensor         = new SharpSensor(this,new Pose(pose));
@@ -88,10 +88,20 @@ public class RobotB
         
         switch (sensorNr) 
         {
-            // Drehe dich um PI/4 rad (+ nach rechts drehen, - nach links drehen)
-            case 1 : return rightSharpSensor.getDistance() ;
-
+            case 1 : return leftSharpSensor.getDistance() ;
+            case 2 : return frontSharpSensor.getDistance() ;
+            case 3 : return rightSharpSensor.getDistance() ;
             default: return 0;
+        }    
+    }
+    
+    public Point getLineSensorValues(int sensorNr)
+    {
+        
+        switch (sensorNr) 
+        {
+            case 1 : return frontMiddleLineSensor.getValues() ;
+            default: return null;
         }    
     }
     
@@ -132,6 +142,8 @@ public class RobotB
         frontSharpSensor.pose        = new Pose(pose.x+50*Math.sin(pose.phi),pose.y+50*Math.cos(pose.phi),pose.addPhi(0));
         leftSharpSensor.pose         = new Pose(pose.x-50*Math.cos(pose.phi),pose.y+50*Math.sin(pose.phi),pose.addPhi(-Math.PI/2));
         rightSharpSensor.pose        = new Pose(pose.x+50*Math.cos(pose.phi),pose.y-50*Math.sin(pose.phi),pose.addPhi(+Math.PI/2));
+        
+        frontMiddleLineSensor.pose   = new Pose(pose.x+80*Math.sin(pose.phi),pose.y+80*Math.cos(pose.phi),pose.addPhi(0)); 
         
         frontSharpSensor.update();
         leftSharpSensor.update();

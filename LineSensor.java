@@ -1,33 +1,26 @@
-
-/**
- * Beschreiben Sie hier die Klasse LineSensor.
- * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
- */
+import java.awt.Point;
 public class LineSensor
-{
-    // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
-    private int x;
+{   
+    private RobotB robot;
+    public Pose pose;
+    
 
-    /**
-     * Konstruktor für Objekte der Klasse LineSensor
-     */
-    public LineSensor()
+    public LineSensor(RobotB robot, Pose pose)
     {
-        // Instanzvariable initialisieren
-        x = 0;
-    }
-
-    /**
-     * Ein Beispiel einer Methode - ersetzen Sie diesen Kommentar mit Ihrem eigenen
-     * 
-     * @param  y    ein Beispielparameter für eine Methode
-     * @return        die Summe aus x und y
-     */
-    public int beispielMethode(int y)
+        this.robot = robot;
+        this.pose  = pose;
+    } 
+    
+    public Point getValues()
     {
-        // tragen Sie hier den Code ein
-        return x + y;
-    }
+       double r = Constants.lineSensorSpacing/2;
+       Point leftSensorPos = new Point((int)(pose.x-r*Math.sin(pose.phi)),(int)(pose.y-r*Math.cos(pose.phi)));
+       Point rightSensorPos = new Point((int)(pose.x+r*Math.sin(pose.phi)),(int)(pose.y+r*Math.cos(pose.phi)));
+       int leftValue  = robot.getField().getPixelBrightnessGreen(leftSensorPos.x,leftSensorPos.y);
+       int rightValue = robot.getField().getPixelBrightnessGreen(rightSensorPos.x,rightSensorPos.y);
+       return new Point(0,0);           
+    } 
 }
+
+
+
