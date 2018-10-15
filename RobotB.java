@@ -37,7 +37,7 @@ public class RobotB
         name = robotName;
         
         //Erzeuge Sensoren
-        frontMiddleLinesensor   = new LineSensor();
+        frontMiddleLinesensor   = new LineSensor(this,new Pose(pose));
         //Sensoren KORREKT anordnen
         frontSharpSensor        = new SharpSensor(this,new Pose(pose));
         leftSharpSensor         = new SharpSensor(this,new Pose(pose));
@@ -132,6 +132,8 @@ public class RobotB
         frontSharpSensor.pose        = new Pose(pose.x+50*Math.sin(pose.phi),pose.y+50*Math.cos(pose.phi),pose.addPhi(0));
         leftSharpSensor.pose         = new Pose(pose.x-50*Math.cos(pose.phi),pose.y+50*Math.sin(pose.phi),pose.addPhi(-Math.PI/2));
         rightSharpSensor.pose        = new Pose(pose.x+50*Math.cos(pose.phi),pose.y-50*Math.sin(pose.phi),pose.addPhi(+Math.PI/2));
+        
+        frontMiddleLinesensor.pose   = new Pose(pose.x+60*Math.sin(pose.phi),pose.y+60*Math.cos(pose.phi),pose.addPhi(0)); 
         
         frontSharpSensor.update();
         leftSharpSensor.update();

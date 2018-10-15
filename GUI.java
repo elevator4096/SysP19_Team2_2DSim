@@ -111,7 +111,7 @@ public class GUI {
     {
         return createImage("images/robotRed.png",(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y),true);
     }
-    //Bild von blauen Roboter laden und darstellen
+    //Bild von blauem Roboter laden und darstellen
     public JLabelRot drawRobotS(RobotS robot)
     {
         return createImage("images/robotBlue.png",(int)Math.round(robot.pose.x),(int)Math.round(robot.pose.y),true);
@@ -121,7 +121,12 @@ public class GUI {
     {
         return createImage("images/sharpSensor.png",(int)Math.round(sharpsensor.pose.x),(int)Math.round(sharpsensor.pose.y),true);
     }
-    
+    //Bild von LineSensor laden und darstellen
+    public JLabelRot drawLineSensor(LineSensor lineSensor)
+    {
+        return createImage("images/lineSensor.png",(int)Math.round(lineSensor.pose.x),(int)Math.round(lineSensor.pose.y),true);
+    }
+    //Bild von blauem Punkt laden und darstellen (wird zum markieren von Schnittpunkten verwendet)
     public JLabelRot drawBluePoint(Pose pose)
     {
         return createImage("images/bluePoint.png",(int)Math.round(pose.x),(int)Math.round(pose.y),true);

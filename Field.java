@@ -54,12 +54,15 @@ public class Field
     public int getPixelBrightnessGreen(int x,int y)
     {
       // Getting pixel color by position x and y 
-      int color  =  background.getRGB(x,y); 
+      int  color  =  background.getRGB(x,y); 
       int  red   = (color & 0x00ff0000) >> 16;
       int  green = (color & 0x0000ff00) >> 8;
       int  blue  =  color & 0x000000ff;
+      
       return green;
     }
+    
+    
     
     
     public double getClosestDistanceToOpponents(SharpSensor sharpSensor, int beamWidth)
