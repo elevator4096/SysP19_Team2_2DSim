@@ -50,21 +50,22 @@ public class SoftwareB
     {      
        //Schrittverkettung welche den Zustand wechselt sobald der Roboter wieder stillsteht 
        
-       if (robot.getLastSharpSensorDistance(1)<60)
+       if ((robot.getLastSharpSensorDistance(1)<48)&&(robot.getLastSharpSensorDistance(1)>0))
        {
-           System.out.println(robot.getLastSharpSensorDistance(1));
-       }
+           //System.out.println(robot.getLastSharpSensorDistance(1));
+       }  
+       
         if (!robot.isMoving())
         {
             state += 1;
             switch (state) 
             {
                 // Drehe dich um PI/4 rad (+ nach rechts drehen, - nach links drehen)
-                case 1 : robot.turn(Math.PI/2+0.1, Math.PI/4) ; break;
-
+                case 1 : robot.turn(Math.PI/2, Math.PI/4) ; break;
+        
                 default: state = 3-1;
             }    
-        }
+       }
     }
     
     private void motorTestDrive()

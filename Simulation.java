@@ -84,8 +84,8 @@ public class Simulation
          */
 
         //Roboter mit Name und Pose(Position und Richtung) erzeugen
-        robotB  = new RobotB(this,"robotB_Red",new Pose(130,120,0));
-        robotS = new RobotS(this,"robotS_Blue",new Pose(630,120,0));
+        robotB  = new RobotB(this,"robotB_Red",new Pose(130,110,0));
+        robotS = new RobotS(this,"robotS_Blue",new Pose(630,110,0));
         
         //Grafische Oberflaeche erzeugen
         gui = new GUI(showGui);
@@ -118,10 +118,6 @@ public class Simulation
         //Software von Roboter initialisieren
         softwareB.init(robotB);
         //softwareS.init(robotS);       
-             
-        //startsignal an Roboter senden
-        softwareB.start();
-        //softwareS.start();
         
         //Hauptschleife der Simulation wird ausgefuehrt bis Zeit abgelaufen
         // 60 s Simulationszeit
@@ -132,6 +128,14 @@ public class Simulation
     private void mainLoop(boolean waiting)
     {
         counter++;
+        
+        //Nach x Zyklen Startsignal an Roboter geben(simulierte Bootzeit)
+        if (counter==5)
+        {
+           //startsignal an Roboter senden
+           softwareB.start();
+           //softwareS.start();
+        }    
         
         //Simulationsschritt ausfuehren
         update();
