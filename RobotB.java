@@ -1,4 +1,4 @@
-/* Abstraktionsebene + Treiber + Hardwaresimulation des Roboters
+/** Abstraktionsebene + Treiber + Hardwaresimulation des Roboters
  * Abstraktionsebene zwischen Kontrollsoftware(läuft auch auf Abstraktionsebene des Roboters)  
  * und simulierten Sensoren/Aktoren
  * 

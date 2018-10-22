@@ -18,9 +18,9 @@ public abstract class Constants
     public static final int fieldSizeMMX        = 760; // pixels
     public static final int fieldSizeMMY        = 1000; // pixels  
     
-    public static final int maxXError           = 2;
-    public static final int maxYError           = 2;
-    public static final double maxPhiError      = 2*Math.PI/360;
+    public static final int maxXError           = 1;
+    public static final int maxYError           = 1;
+    public static final double maxPhiError      = 0.1*Math.PI/360;
     
     
 }

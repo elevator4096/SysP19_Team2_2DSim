@@ -1,6 +1,8 @@
-
-/* Simulation des Gesamten Spielablaufs durch serielles ausfuehren der einzelnen Updateroutinen der zu simulierenden Komponenten
+/** 
+ * Simulation des Gesamten Spielablaufs durch serielles ausfuehren der einzelnen Updateroutinen der zu simulierenden Komponenten
  * und Darstellung der Zustaende simulierter Objekte durch entsprechende GUI Aufrufe
+ * @author none
+ * @version 22.10.2018
  */
 
 

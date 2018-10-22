@@ -40,19 +40,41 @@ public class SoftwareB
     { 
         if (gameStarted)
         {
-            driveAround();
-            //testDrive();
+            //driveAround();
+            //motorTestDriv();
+            sensorDrive();
         }    
     }    
     
-    public void testDrive()
+    private void sensorDrive()
+    {      
+       //Schrittverkettung welche den Zustand wechselt sobald der Roboter wieder stillsteht 
+       
+       if (robot.getLastSharpSensorDistance(1)<60)
+       {
+           System.out.println(robot.getLastSharpSensorDistance(1));
+       }
+        if (!robot.isMoving())
+        {
+            state += 1;
+            switch (state) 
+            {
+                // Drehe dich um PI/4 rad (+ nach rechts drehen, - nach links drehen)
+                case 1 : robot.turn(Math.PI/2+0.1, Math.PI/4) ; break;
+
+                default: state = 3-1;
+            }    
+        }
+    }
+    
+    private void motorTestDrive()
     {      
         robot.rightDrivingMotor.setSpeed(-100);
         robot.leftDrivingMotor.setSpeed(100);
     }
     
     //herumfahren um Fahrfunktionen zu testen
-    public void driveAround()
+    private void driveAround()
     {
         //Schrittverkettung welche den Zustand wechselt sobald der Roboter wieder stillsteht 
         if (!robot.isMoving())
