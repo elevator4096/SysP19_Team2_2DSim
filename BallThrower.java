@@ -7,27 +7,27 @@
  */
 public class BallThrower
 {
-    // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
-    private int x;
-
-    /**
-     * Konstruktor für Objekte der Klasse BallThrower
-     */
-    public BallThrower()
+    private RobotB robot;
+    private Ball ball;
+    public Pose pose;
+    
+    public boolean ballDetected = false;
+    
+    public BallThrower(Ball ball, Pose pose)
     {
-        // Instanzvariable initialisieren
-        x = 0;
-    }
-
-    /**
-     * Ein Beispiel einer Methode - ersetzen Sie diesen Kommentar mit Ihrem eigenen
-     * 
-     * @param  y    ein Beispielparameter für eine Methode
-     * @return        die Summe aus x und y
-     */
-    public int beispielMethode(int y)
+        this.ball = ball;
+        this.pose  = pose;
+    }    
+    
+    public boolean getBallPosession()
     {
-        // tragen Sie hier den Code ein
-        return x + y;
+        return ballDetected;
     }
+    
+    public boolean throwBall()
+    {
+        Pose throwPose = new Pose(pose.x+Constants.throwDistance*Math.sin(pose.phi),pose.y+Constants.throwDistance*Math.cos(pose.phi),pose.addPhi(0)); 
+        ball.goTo(throwPose);
+        return true;
+    }  
 }

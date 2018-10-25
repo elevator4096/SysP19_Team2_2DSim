@@ -6,6 +6,7 @@ public abstract class Constants
     
     // Mechanik
     public static final int wheelbase           = 160; // Achsenabstand in mm
+    public static final int throwDistance       = 220; // Wurfdistanz in mm
     
     // Sensoren
     public static final int lineSensorSpacing   = 6;   // Liniensensor Abstand in mm 
@@ -18,9 +19,9 @@ public abstract class Constants
     public static final int fieldSizeMMX        = 760; // pixels
     public static final int fieldSizeMMY        = 1000; // pixels  
     
-    public static final int maxXError           = 2;
-    public static final int maxYError           = 2;
-    public static final double maxPhiError      = 2*Math.PI/360;
+    public static final int maxXError           = 1;
+    public static final int maxYError           = 1;
+    public static final double maxPhiError      = 0.1*Math.PI/360;
     
     
 }

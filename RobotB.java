@@ -1,4 +1,4 @@
-/* Abstraktionsebene + Treiber + Hardwaresimulation des Roboters
+/** Abstraktionsebene + Treiber + Hardwaresimulation des Roboters
  * Abstraktionsebene zwischen Kontrollsoftware(läuft auch auf Abstraktionsebene des Roboters)  
  * und simulierten Sensoren/Aktoren
  * 
@@ -14,6 +14,7 @@ public class RobotB
     public String name;
     public Pose pose = new Pose(0,0,0);
     private Pose targetPose = new Pose(0,0,0);
+    public boolean ballPosession = false;
     
     // Sensoren
     public SharpSensor  frontSharpSensor; 
@@ -47,7 +48,7 @@ public class RobotB
         //Erzeuge Aktoren
         leftDrivingMotor        = new DrivingMotor();
         rightDrivingMotor       = new DrivingMotor();
-        ballThrower1            = new BallThrower();
+        ballThrower1            = new BallThrower(getBall(),new Pose(pose));
         
         //Zielpose(Position und Richtung) auf aktuelle pose setzen
         targetPose.setPose(this.pose);
@@ -105,6 +106,11 @@ public class RobotB
         }    
     }
     
+    public boolean throwBall()
+    {
+        return ballThrower1.throwBall();
+    }    
+    
     public long getTime()
     {
         return simulation.clock.getTime();
@@ -113,6 +119,11 @@ public class RobotB
     public Field getField()
     {
         return simulation.getField();
+    }
+    
+    public Ball getBall()
+    {
+        return simulation.getBall();
     }
     
     //Gibt nur wahr zurueck wenn sich keines der Raeder bewegt
@@ -124,6 +135,9 @@ public class RobotB
     //Status von diversen Sensoren und Aktoren aktualisieren(Motor ausschalten wenn Zielposition erreicht, etc.)
     private void updateStatus()
     {   
+        //Ballbesitz aktualisieren
+        ballPosession = ballThrower1.getBallPosession();
+        
         if ( isMoving() && pose.closeEnough(targetPose) ) 
         {
             leftDrivingMotor.setSpeed(0);
@@ -144,6 +158,8 @@ public class RobotB
         rightSharpSensor.pose        = new Pose(pose.x+50*Math.cos(pose.phi),pose.y-50*Math.sin(pose.phi),pose.addPhi(+Math.PI/2));
         
         frontMiddleLineSensor.pose   = new Pose(pose.x+80*Math.sin(pose.phi),pose.y+80*Math.cos(pose.phi),pose.addPhi(0)); 
+        
+        ballThrower1.pose            = new Pose(pose.x+10*Math.sin(pose.phi),pose.y+10*Math.cos(pose.phi),pose.addPhi(0)); 
         
         frontSharpSensor.update();
         leftSharpSensor.update();

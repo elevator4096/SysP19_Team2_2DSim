@@ -126,6 +126,15 @@ public class GUI {
     {
         return createImage("images/lineSensor.png",(int)Math.round(lineSensor.pose.x),(int)Math.round(lineSensor.pose.y),true);
     }
+    //Bild von Ballwerfer laden und darstellen
+    public JLabelRot drawBallThrower(BallThrower ballThrower)
+    {
+        return createImage("images/ballThrower.png",(int)Math.round(ballThrower.pose.x),(int)Math.round(ballThrower.pose.y),true);
+    }
+    public JLabelRot drawBall(Ball ball)
+    {
+        return createImage("images/ball.png",(int)Math.round(ball.pose.x),(int)Math.round(ball.pose.y),true);
+    }
     //Bild von blauem Punkt laden und darstellen (wird zum markieren von Schnittpunkten verwendet)
     public JLabelRot drawBluePoint(Pose pose)
     {

@@ -6,11 +6,8 @@
  */
 public class SoftwareB
 {
-    
     public RobotB robot;
-    
     int state = 0;
-    
     boolean gameStarted = false;
 
     public SoftwareB()
@@ -22,17 +19,13 @@ public class SoftwareB
     //initialisiert den Roboter sobald die Simulationsumgebung fertig geladen ist
     public void init(RobotB robotB)
     {
-        robot = robotB;
-           
+        robot = robotB;           
     }
     
     //wird ausgefuehrt sobald das Startsignal empfangen wurde
     public void start()
     {
         gameStarted = true;
-        
-        //NUR ZUM TESTEN( Zielposition des Roboters weit ausserhalb setzen)
-        //robot.drive(2000,100)       ;
     }
     
     //Wird in der Hauptschleife ausgefuehrt(hier von Simulationsumgebung - Real in Endlosschleife)
@@ -40,19 +33,45 @@ public class SoftwareB
     { 
         if (gameStarted)
         {
-            driveAround();
-            //testDrive();
+            if (!robot.ballPosession)
+            {
+                driveAround();
+                //motorTestDriv();
+                //sensorDrive();
+            }
         }    
     }    
     
-    public void testDrive()
+    private void sensorDrive()
+    {      
+       //Schrittverkettung welche den Zustand wechselt sobald der Roboter wieder stillsteht 
+       
+       if ((robot.getLastSharpSensorDistance(1)<48)&&(robot.getLastSharpSensorDistance(1)>0))
+       {
+           //System.out.println(robot.getLastSharpSensorDistance(1));
+       }  
+       
+        if (!robot.isMoving())
+        {
+            state += 1;
+            switch (state) 
+            {
+                // Drehe dich um PI/4 rad (+ nach rechts drehen, - nach links drehen)
+                case 1 : robot.turn(Math.PI/2, Math.PI/4) ; break;
+        
+                default: state = 3-1;
+            }    
+       }
+    }
+    
+    private void motorTestDrive()
     {      
         robot.rightDrivingMotor.setSpeed(-100);
         robot.leftDrivingMotor.setSpeed(100);
     }
     
     //herumfahren um Fahrfunktionen zu testen
-    public void driveAround()
+    private void driveAround()
     {
         //Schrittverkettung welche den Zustand wechselt sobald der Roboter wieder stillsteht 
         if (!robot.isMoving())
@@ -61,14 +80,17 @@ public class SoftwareB
             switch (state) 
             {
                 // Drehe dich um PI/4 rad (+ nach rechts drehen, - nach links drehen)
-                case 1 : robot.turn(Math.PI/4, Math.PI/4) ; break;
-                case 2 : robot.drive(350,200)       ; break;
+                case 1 : robot.turn(Math.PI/2, Math.PI/4) ; break;
+                case 2 : robot.drive(120,200)       ; break;
                 
-                case 3 : robot.turn(Math.PI/2, Math.PI/4) ; break;
-                //case 4 : robot.drive(220,150)       ; break;
-                case 4 : robot.turn(Math.PI*2-0.1, Math.PI/20) ; break;
-
-                default: state = 3-1;
+                case 3 : robot.turn(-Math.PI/2, Math.PI/4) ; break;
+                case 4 : robot.drive(240,150)       ; break;
+                case 5 : robot.turn(Math.PI/2, Math.PI/4) ; break;
+                case 6 : robot.drive(300,150)       ; break;
+                case 7 : robot.turn(Math.PI/2, Math.PI/4) ; break;
+                
+                
+                default: state = 42/*3-1*/;
             }    
         }
         
