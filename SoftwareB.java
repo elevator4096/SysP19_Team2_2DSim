@@ -33,9 +33,12 @@ public class SoftwareB
     { 
         if (gameStarted)
         {
-            driveAround();
-            //motorTestDriv();
-            //sensorDrive();
+            if (!robot.ballPosession)
+            {
+                driveAround();
+                //motorTestDriv();
+                //sensorDrive();
+            }
         }    
     }    
     
@@ -84,6 +87,7 @@ public class SoftwareB
                 case 4 : robot.drive(240,150)       ; break;
                 case 5 : robot.turn(Math.PI/2, Math.PI/4) ; break;
                 case 6 : robot.drive(300,150)       ; break;
+                case 7 : robot.turn(Math.PI/2, Math.PI/4) ; break;
                 
                 
                 default: state = 42/*3-1*/;

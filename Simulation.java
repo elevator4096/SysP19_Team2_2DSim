@@ -24,6 +24,7 @@ public class Simulation
     //Grafische Oberflaeche
     private GUI gui;
     private Field field;
+    private Ball ball = new Ball();
     private List<Pose> opponentPositions = new ArrayList<Pose>();
     
     //drehbare Bilder von Robotern
@@ -57,6 +58,8 @@ public class Simulation
     public JLabelRot  ballThrowerLabelB;
     
     public JLabelRot  ballThrowerLabelS;
+    
+    public JLabelRot  ballLabel;
     
     
     //Hintergrundbild
@@ -101,10 +104,18 @@ public class Simulation
 
         //Roboter mit Name und Pose(Position und Richtung) erzeugen
         robotB  = new RobotB(this,"robotB_Red",new Pose(130,110,0));
-        robotS = new RobotS(this,"robotS_Blue",new Pose(630,110,0));
+        robotS = new RobotS(this,"robotS_Blue",new Pose(550,110,0));
+        
+        //RobotS Ball geben ( nur zum TESTEN!!!)
+        robotB.ballThrower1.ballDetected = false;
+        robotS.ballThrower1.ballDetected = true;
+        ball.pose = new Pose(robotS.pose);
         
         //Grafische Oberflaeche erzeugen
         gui = new GUI(showGui);
+        
+        //drehbares Bild von Ball laden und darstellen
+        ballLabel = gui.drawBall(ball);
         
         //drehbare Bilder von LineSensoren laden und darstellen
         frontMiddleLineSensorLabelB = gui.drawLineSensor(robotB.frontMiddleLineSensor);
@@ -193,6 +204,7 @@ public class Simulation
         
         reposeRobotB();
         reposeRobotS();
+        gui.repose(ballLabel,ball.pose);
         
         
         
@@ -228,7 +240,7 @@ public class Simulation
         gui.repose(leftSharpSensorPointS ,robotS.leftSharpSensor .getClosestPoint());
         gui.repose(rightSharpSensorPointS,robotS.rightSharpSensor.getClosestPoint());
         
-        gui.repose(frontMiddleLineSensorLabelS,robotB.frontMiddleLineSensor.pose);
+        gui.repose(frontMiddleLineSensorLabelS,robotS.frontMiddleLineSensor.pose);
         gui.repose(ballThrowerLabelS,robotS.ballThrower1.pose);
     }
         
@@ -249,6 +261,11 @@ public class Simulation
     public Field getField()
     {
         return field;
+    }
+    
+    public Ball getBall()
+    {
+        return ball;
     }
 }
 

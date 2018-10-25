@@ -6,6 +6,7 @@ public abstract class Constants
     
     // Mechanik
     public static final int wheelbase           = 160; // Achsenabstand in mm
+    public static final int throwDistance       = 220; // Wurfdistanz in mm
     
     // Sensoren
     public static final int lineSensorSpacing   = 6;   // Liniensensor Abstand in mm 

@@ -25,12 +25,48 @@ public class SoftwareS
     { 
         if (gameStarted)
         {
-            driveAround2();
+            if (!robot.ballPosession)
+            {
+                //driveAround();
+                driveUturn();
+            }
+            throwTest();
         }    
     }   
     
-        //herumfahren um Fahrfunktionen zu testen
-    private void driveAround2()
+    public void throwTest()
+    {
+        if (robot.getTime()>12000000)
+        {
+            robot.throwBall();
+        }    
+    }
+    
+    //Fahre hin und her
+    private void driveUturn()
+    {
+        //Schrittverkettung welche den Zustand wechselt sobald der Roboter wieder stillsteht 
+        if (!robot.isMoving())
+        {
+            state += 1;
+            switch (state) 
+            {
+                // Drehe dich um PI/4 rad (+ nach rechts drehen, - nach links drehen)
+                case 1 : robot.turn(-Math.PI/2, Math.PI/4) ; break;
+                case 2 : robot.drive(200,200)       ; break;
+                
+                case 3 : robot.turn(Math.PI, Math.PI/4) ; break;
+                case 4 : robot.drive(200,100)       ; break;
+
+                default: state = 3-1;
+            }    
+        }
+        
+    } 
+    
+    
+    //herumfahren um Fahrfunktionen zu testen
+    private void driveAround()
     {
         //Schrittverkettung welche den Zustand wechselt sobald der Roboter wieder stillsteht 
         if (!robot.isMoving())
