@@ -31,17 +31,27 @@ public class Simulation
     private JLabelRot blueRobotS;
     
     //Blauen punkt laden und offscreen darstellen
-    JLabelRot frontSharpSensorPoint; 
-    JLabelRot leftSharpSensorPoint; 
-    JLabelRot rightSharpSensorPoint; 
+    JLabelRot frontSharpSensorPointB; 
+    JLabelRot leftSharpSensorPointB; 
+    JLabelRot rightSharpSensorPointB;
+    
+    JLabelRot frontSharpSensorPointS; 
+    JLabelRot leftSharpSensorPointS; 
+    JLabelRot rightSharpSensorPointS; 
     
     //drehbare Bilder von SharpSensoren
-    public JLabelRot  frontSharpSensorLabel; 
-    public JLabelRot  leftSharpSensorLabel; 
-    public JLabelRot  rightSharpSensorLabel; 
+    public JLabelRot  frontSharpSensorLabelB; 
+    public JLabelRot  leftSharpSensorLabelB; 
+    public JLabelRot  rightSharpSensorLabelB; 
+    
+    public JLabelRot  frontSharpSensorLabelS; 
+    public JLabelRot  leftSharpSensorLabelS; 
+    public JLabelRot  rightSharpSensorLabelS; 
     
     //drehbare Bilder von Liniensensor
-    public JLabelRot  frontMiddleLineSensorLabel; 
+    public JLabelRot  frontMiddleLineSensorLabelB;
+    
+    public JLabelRot  frontMiddleLineSensorLabelS;
     
     
     //Hintergrundbild
@@ -91,17 +101,27 @@ public class Simulation
         gui = new GUI(showGui);
         
         //drehbare Bilder von LineSensoren laden und darstellen
-        frontMiddleLineSensorLabel = gui.drawLineSensor(robotB.frontMiddleLineSensor);
+        frontMiddleLineSensorLabelB = gui.drawLineSensor(robotB.frontMiddleLineSensor);
+        
+        frontMiddleLineSensorLabelS = gui.drawLineSensor(robotS.frontMiddleLineSensor);
         
         //SharpMessPunkte laden
-        frontSharpSensorPoint = gui.drawBluePoint(new Pose(0,0,0));
-        leftSharpSensorPoint  = gui.drawBluePoint(new Pose(0,0,0));
-        rightSharpSensorPoint = gui.drawBluePoint(new Pose(0,0,0));
+        frontSharpSensorPointB = gui.drawBluePoint(new Pose(0,0,0));
+        leftSharpSensorPointB  = gui.drawBluePoint(new Pose(0,0,0));
+        rightSharpSensorPointB = gui.drawBluePoint(new Pose(0,0,0));
+        
+        frontSharpSensorPointS = gui.drawBluePoint(new Pose(0,0,0));
+        leftSharpSensorPointS  = gui.drawBluePoint(new Pose(0,0,0));
+        rightSharpSensorPointS = gui.drawBluePoint(new Pose(0,0,0));
         
         //drehbare Bilder von SharpSensoren laden und darstellen
-        frontSharpSensorLabel = gui.drawSharpSensor(robotB.frontSharpSensor); 
-        leftSharpSensorLabel  = gui.drawSharpSensor(robotB.leftSharpSensor);  
-        rightSharpSensorLabel = gui.drawSharpSensor(robotB.rightSharpSensor);  
+        frontSharpSensorLabelB = gui.drawSharpSensor(robotB.frontSharpSensor); 
+        leftSharpSensorLabelB  = gui.drawSharpSensor(robotB.leftSharpSensor);  
+        rightSharpSensorLabelB = gui.drawSharpSensor(robotB.rightSharpSensor);  
+        
+        frontSharpSensorLabelS = gui.drawSharpSensor(robotS.frontSharpSensor); 
+        leftSharpSensorLabelS  = gui.drawSharpSensor(robotS.leftSharpSensor);  
+        rightSharpSensorLabelS = gui.drawSharpSensor(robotS.rightSharpSensor);          
         
         //Drehbare Bilder von Robotern laden und darstellen
         redRobotB  = gui.drawRobotB(robotB);
@@ -117,7 +137,7 @@ public class Simulation
         
         //Software von Roboter initialisieren
         softwareB.init(robotB);
-        //softwareS.init(robotS);       
+        softwareS.init(robotS);       
         
         //Hauptschleife der Simulation wird ausgefuehrt bis Zeit abgelaufen
         // 60 s Simulationszeit
@@ -134,7 +154,7 @@ public class Simulation
         {
            //startsignal an Roboter senden
            softwareB.start();
-           //softwareS.start();
+           softwareS.start();
         }    
         
         //Simulationsschritt ausfuehren
@@ -154,29 +174,51 @@ public class Simulation
     {
         //lasse Roboter seinen neuen veraenderten Zustand ermitteln(Positionsaenderung, Zeitaenderung, etc.)
         robotB.update();
-        //robotS.update();
+        robotS.update();
         
         //Hauptschleife der Robotersoftware ausfuehren
         softwareB.mainLoop();
-        //softwareS.mainLoop();
+        softwareS.mainLoop();
         
-        //neue Pose(Position und Richtung) des Roboters darstellen
-        gui.repose(redRobotB,robotB.pose);
-        //neue Pose(Position und Richtung) der Sharpsensoren darstellen
-        gui.repose(frontSharpSensorLabel,robotB.frontSharpSensor.pose);
-        gui.repose(leftSharpSensorLabel,robotB.leftSharpSensor.pose);
-        gui.repose(rightSharpSensorLabel,robotB.rightSharpSensor.pose);
-        
-        gui.repose(frontSharpSensorPoint,robotB.frontSharpSensor.getClosestPoint());
-        gui.repose(leftSharpSensorPoint ,robotB.leftSharpSensor .getClosestPoint());
-        gui.repose(rightSharpSensorPoint,robotB.rightSharpSensor.getClosestPoint());
-        
-        gui.repose(frontMiddleLineSensorLabel,robotB.frontMiddleLineSensor.pose);
+        reposeRobotB();
+        reposeRobotS();
         
         
         
     }    
     
+    private void reposeRobotB()
+    {
+        //neue Pose(Position und Richtung) des Roboters darstellen
+        gui.repose(redRobotB,robotB.pose);
+        //neue Pose(Position und Richtung) der Sharpsensoren darstellen
+        gui.repose(frontSharpSensorLabelB,robotB.frontSharpSensor.pose);
+        gui.repose(leftSharpSensorLabelB ,robotB.leftSharpSensor .pose);
+        gui.repose(rightSharpSensorLabelB,robotB.rightSharpSensor.pose);
+        
+        gui.repose(frontSharpSensorPointB,robotB.frontSharpSensor.getClosestPoint());
+        gui.repose(leftSharpSensorPointB ,robotB.leftSharpSensor .getClosestPoint());
+        gui.repose(rightSharpSensorPointB,robotB.rightSharpSensor.getClosestPoint());
+        
+        gui.repose(frontMiddleLineSensorLabelB,robotB.frontMiddleLineSensor.pose);
+    }
+    
+    private void reposeRobotS()
+    {
+        //neue Pose(Position und Richtung) des Roboters darstellen
+        gui.repose(blueRobotS,robotS.pose);
+        //neue Pose(Position und Richtung) der Sharpsensoren darstellen
+        gui.repose(frontSharpSensorLabelS,robotS.frontSharpSensor.pose);
+        gui.repose(leftSharpSensorLabelS ,robotS.leftSharpSensor .pose);
+        gui.repose(rightSharpSensorLabelS,robotS.rightSharpSensor.pose);
+        
+        gui.repose(frontSharpSensorPointS,robotS.frontSharpSensor.getClosestPoint());
+        gui.repose(leftSharpSensorPointS ,robotS.leftSharpSensor .getClosestPoint());
+        gui.repose(rightSharpSensorPointS,robotS.rightSharpSensor.getClosestPoint());
+        
+        gui.repose(frontMiddleLineSensorLabelS,robotB.frontMiddleLineSensor.pose);
+    }
+        
     
     //Wartefunktion um Simulation zu verlangsamen
     private void wait(int waitingTime)
