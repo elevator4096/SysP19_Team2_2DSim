@@ -48,10 +48,15 @@ public class Simulation
     public JLabelRot  leftSharpSensorLabelS; 
     public JLabelRot  rightSharpSensorLabelS; 
     
-    //drehbare Bilder von Liniensensor
+    //drehbare Bilder von Liniensensoren
     public JLabelRot  frontMiddleLineSensorLabelB;
     
     public JLabelRot  frontMiddleLineSensorLabelS;
+    
+    //drehbare Bilder von Ballwerfern
+    public JLabelRot  ballThrowerLabelB;
+    
+    public JLabelRot  ballThrowerLabelS;
     
     
     //Hintergrundbild
@@ -74,7 +79,8 @@ public class Simulation
     {
         //Gegnerpositionen manuell festlegen
         opponentPositions.add(new Pose(126,238,0));
-        opponentPositions.add(new Pose(296,237,0));
+        //opponentPositions.add(new Pose(296,237,0));
+        opponentPositions.add(new Pose(459,237,0));
         opponentPositions.add(new Pose(458,496,0));
         opponentPositions.add(new Pose(628,497,0));
         
@@ -104,6 +110,11 @@ public class Simulation
         frontMiddleLineSensorLabelB = gui.drawLineSensor(robotB.frontMiddleLineSensor);
         
         frontMiddleLineSensorLabelS = gui.drawLineSensor(robotS.frontMiddleLineSensor);
+        
+        //drehbare Bilder von Ballwerfern laden und darstellen
+        ballThrowerLabelB = gui.drawBallThrower(robotB.ballThrower1);
+        
+        ballThrowerLabelS = gui.drawBallThrower(robotS.ballThrower1);
         
         //SharpMessPunkte laden
         frontSharpSensorPointB = gui.drawBluePoint(new Pose(0,0,0));
@@ -201,6 +212,7 @@ public class Simulation
         gui.repose(rightSharpSensorPointB,robotB.rightSharpSensor.getClosestPoint());
         
         gui.repose(frontMiddleLineSensorLabelB,robotB.frontMiddleLineSensor.pose);
+        gui.repose(ballThrowerLabelB,robotB.ballThrower1.pose);
     }
     
     private void reposeRobotS()
@@ -217,6 +229,7 @@ public class Simulation
         gui.repose(rightSharpSensorPointS,robotS.rightSharpSensor.getClosestPoint());
         
         gui.repose(frontMiddleLineSensorLabelS,robotB.frontMiddleLineSensor.pose);
+        gui.repose(ballThrowerLabelS,robotS.ballThrower1.pose);
     }
         
     

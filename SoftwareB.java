@@ -77,14 +77,16 @@ public class SoftwareB
             switch (state) 
             {
                 // Drehe dich um PI/4 rad (+ nach rechts drehen, - nach links drehen)
-                case 1 : robot.turn(Math.PI/4, Math.PI/4) ; break;
-                case 2 : robot.drive(380,200)       ; break;
+                case 1 : robot.turn(Math.PI/2, Math.PI/4) ; break;
+                case 2 : robot.drive(120,200)       ; break;
                 
-                case 3 : robot.turn(Math.PI/2, Math.PI/4) ; break;
-                //case 4 : robot.drive(220,150)       ; break;
-                case 4 : robot.turn(Math.PI*2-0.1, Math.PI/5) ; break;
-
-                default: state = 3-1;
+                case 3 : robot.turn(-Math.PI/2, Math.PI/4) ; break;
+                case 4 : robot.drive(240,150)       ; break;
+                case 5 : robot.turn(Math.PI/2, Math.PI/4) ; break;
+                case 6 : robot.drive(300,150)       ; break;
+                
+                
+                default: state = 42/*3-1*/;
             }    
         }
         

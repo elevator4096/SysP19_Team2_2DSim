@@ -47,7 +47,7 @@ public class RobotB
         //Erzeuge Aktoren
         leftDrivingMotor        = new DrivingMotor();
         rightDrivingMotor       = new DrivingMotor();
-        ballThrower1            = new BallThrower();
+        ballThrower1            = new BallThrower(this,new Pose(pose));
         
         //Zielpose(Position und Richtung) auf aktuelle pose setzen
         targetPose.setPose(this.pose);
@@ -144,6 +144,8 @@ public class RobotB
         rightSharpSensor.pose        = new Pose(pose.x+50*Math.cos(pose.phi),pose.y-50*Math.sin(pose.phi),pose.addPhi(+Math.PI/2));
         
         frontMiddleLineSensor.pose   = new Pose(pose.x+80*Math.sin(pose.phi),pose.y+80*Math.cos(pose.phi),pose.addPhi(0)); 
+        
+        ballThrower1.pose            = new Pose(pose.x+10*Math.sin(pose.phi),pose.y+10*Math.cos(pose.phi),pose.addPhi(0)); 
         
         frontSharpSensor.update();
         leftSharpSensor.update();
