@@ -91,8 +91,13 @@ public class Field
                 if( Math.abs( objectAngle-sP.phi) > Math.PI/4) continue; // Falls die Schnittpunkte hinter dem Sensor liegen werden sie ignoriert
                 
                 //berechne kleinste Distanz zw Sensorposition und Objektschnittpunkten
-                double dist0 = Math.hypot(intersections.get(0).x-sP.x, intersections.get(0).y-sP.y);
-                double dist1 = Math.hypot(intersections.get(1).x-sP.x, intersections.get(1).y-sP.y);
+                
+                //Math.hypot wird von cheerpj_1.2 nicht nunterstuetzt
+                //double dist0 = Math.hypot(intersections.get(0).x-sP.x, intersections.get(0).y-sP.y);
+                //double dist1 = Math.hypot(intersections.get(1).x-sP.x, intersections.get(1).y-sP.y);
+                double dist0 = hypot(intersections.get(0).x-sP.x, intersections.get(0).y-sP.y);
+                double dist1 = hypot(intersections.get(1).x-sP.x, intersections.get(1).y-sP.y);                
+                
                 
                 // kleinste Distanz speichern
                 if (Math.min(dist0,dist1) < closestDist)
@@ -128,5 +133,12 @@ public class Field
         BufferedImageOp op = new ConvolveOp(kernel);
         image = op.filter(image, null);
         return image;
-    }    
+    }   
+    
+        //eigene implementation von Math.hypot fuer cheerpj_1.2
+    private double hypot(double a,double b)
+    {
+        return Math.sqrt(a*a+b*b);
+    }  
+  
 }
