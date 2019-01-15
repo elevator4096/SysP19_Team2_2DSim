@@ -82,7 +82,7 @@ public class GUI {
     //Hintergrundbild laden und darstellen - sowie Mausmonitor aktivieren
     public BufferedImage createBackground1()
     {
-        String imagePath = "images/background1.png";
+        String imagePath = "images/background2.png";
         JLabelRot background = createImage(imagePath,0,Constants.fieldSizeMMY,false);
         mouseMonitor = new MouseMonitor(background,pixelPmm);
         
